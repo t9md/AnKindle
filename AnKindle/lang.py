@@ -1,23 +1,6 @@
 # -*- coding:utf-8 -*-
-#
-# Copyright © 2016–2017 Liang Feng <finalion@gmail.com>
-#
-# Support: Report an issue at https://github.com/finalion/WordQuery/issues
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# any later version; http://www.gnu.org/copyleft/gpl.html.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from anki.lang import currentLang
+from .kkLib import getTrans
 
 _style = u"""
 <style>
@@ -61,7 +44,8 @@ trans = {
     'DOWNLOAD MDX': {'zh_CN': u'下载MDX词典', 'en': u'Download MDX Dictionaries'},
     'MATURE': {'zh_CN': u'已掌握', 'en': u'Mature'},
     'NEW WORDS': {'zh_CN': u'新词', 'en': u'New'},
-    'MDX MEMORY ERROR': {'zh_CN': u'无法读取MDX词典内容，请更换词典文件。', 'en': u'Memory error when loading MDX, please switch ' u'another MDX file.'},
+    'MDX MEMORY ERROR': {'zh_CN': u'无法读取MDX词典内容，请更换词典文件。',
+                         'en': u'Memory error when loading MDX, please switch ' u'another MDX file.'},
     'REFRESH': {'zh_CN': u'刷新', 'en': u'Refresh'},
     'MARK MATURE': {'zh_CN': u'标记为已掌握', 'en': u'Mark Mature'},
     'MARK NEW': {'zh_CN': u'标记为新词', 'en': u'Mark New'},
@@ -71,8 +55,7 @@ trans = {
     "ENSURE USB": {'zh_CN': u'请确保Kindle已经接入电脑。',
                    'en': u'Please ensure Kindle has been adtapted to your machine.'},
     "ANKINDLE WORDS PREVIEW": {'zh_CN': u'生词预览',
-                   'en': u'Words Preview'},
-
+                               'en': u'Words Preview'},
 
     # region preview window
     'WORD': {'zh_CN': u'单词', 'en': u'Word'},
@@ -86,18 +69,5 @@ trans = {
 }
 
 
-def _trans(key, lang=currentLang):
-    key = key.upper().strip()
-    if lang != 'zh_CN' and lang != 'en' and lang != 'fr':
-        lang = 'en'  # fallback
-
-    def disp(s):
-        return s.capitalize()
-
-    if key not in trans or lang not in trans[key]:
-        return disp(key)
-    return trans[key][lang]
-
-
-def _sl(key):
-    return trans[key].values()
+def _trans(key):
+    return getTrans(key, trans)

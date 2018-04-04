@@ -4,7 +4,6 @@
 
 from PyQt4.QtGui import QAction
 
-from AnKindle.util import MDXDownloader
 from anki.collection import _Collection
 from aqt import mw
 from aqt.importing import importFile

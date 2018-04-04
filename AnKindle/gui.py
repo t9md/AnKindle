@@ -6,28 +6,25 @@ import re
 import sqlite3
 from functools import partial
 from operator import itemgetter
-from threading import Thread
-from urllib import urlretrieve
 
 from PyQt4 import QtCore, QtGui
 from PyQt4.QtCore import QAbstractTableModel, Qt, QModelIndex
 from PyQt4.QtGui import QDialog, QVBoxLayout, QFrame, \
     QPushButton, QSpacerItem, QLabel, QHBoxLayout, QSizePolicy, QGroupBox, QComboBox, QCheckBox, QTabWidget, QTableView, \
-    QItemDelegate, QBrush, QColor, QPainter, QFont, QIcon
+    QIcon
 
 import anki
 from AnKindle import resource_rc
 from anki import notes, lang
-from aqt.webview import AnkiWebView
 from anki.lang import currentLang
 from aqt import mw
 from aqt.importing import importFile
 from aqt.progress import ProgressManager
 from aqt.studydeck import StudyDeck
 from aqt.utils import showInfo, getFile, showText, openLink, askUser
-from .SharedControl import WeChatButton, MoreAddonButton, VoteButton, _ImageButton, UpgradeButton, AddonUpdater
+from .kkLib import WeChatButton, MoreAddonButton, VoteButton, _ImageButton, UpgradeButton, AddonUpdater, HLine, VLine
 from .config import Config
-from .const import ADDON_CD, DEBUG, __version__, MDX_LIB_URL, DEFAULT_TEMPLATE
+from .const import ADDON_CD, __version__, MDX_LIB_URL, DEFAULT_TEMPLATE
 from .db import KindleDB
 from .lang import _trans
 from .libs.mdict import mdict_query
@@ -61,7 +58,7 @@ class _SharedFrame(QFrame):
     def __init__(self, parent, updater=None):
         super(_SharedFrame, self).__init__(parent)
         self.l_h_widgets = QHBoxLayout(self)
-        wx = WeChatButton(self)
+        wx = WeChatButton(self,os.path.join(os.path.dirname(__file__),"resource","AnKindle.jpg"))
         wx.setObjectName("wx")
         self.l_h_widgets.addWidget(wx)
         vt = VoteButton(self, ADDON_CD)
@@ -86,18 +83,7 @@ class _SharedFrame(QFrame):
             loc = os.path.join(os.path.dirname(__file__), "resource", "help_en.html")
         return loc
 
-def HLine():
-    toto = QFrame()
-    toto.setFrameShape(QFrame.HLine)
-    toto.setFrameShadow(QFrame.Sunken)
-    return toto
 
-
-def VLine():
-    toto = QFrame()
-    toto.setFrameShape(QFrame.VLine)
-    toto.setFrameShadow(QFrame.Sunken)
-    return toto
 
 
 class Window(QDialog):

@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
 # Created: 3/27/2018
 # Project : AnKindle
-
-
-# -*- coding:utf-8 -*-
 #
 # Copyright © 2016–2018 KuangKuang <upday7@163.com>
-#
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

@@ -3,12 +3,14 @@
 # Project : AnKindle
 import os
 
+from .kkLib import ensureUnicode
+
 __version__ = "0.4.11"
 HAS_SET_UP = False
 ADDON_CD = 1016931132
 DEBUG = False
 MDX_LIB_URL = "https://github.com/upday7/AnKindle/tree/master/AnKindle/resource/MDX%20Dictionary"
-DEFAULT_TEMPLATE = os.path.join(os.path.dirname(__file__), u"resource", ur"AnKindle.apkg")
+DEFAULT_TEMPLATE = ensureUnicode(os.path.join(os.path.dirname(__file__), u"resource", ur"AnKindle.apkg"))
 SQL_SELECT_WORDS = """
 SELECT
   ws.id,
