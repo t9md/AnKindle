@@ -7,30 +7,41 @@ import sqlite3
 from functools import partial
 from operator import itemgetter
 
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import QAbstractTableModel, Qt, QModelIndex
-from PyQt4.QtGui import QDialog, QVBoxLayout, QFrame, \
+from .kkLib import unicode
+from aqt import QAbstractTableModel, Qt, QModelIndex, QAbstractItemView
+from aqt import QDialog, QVBoxLayout, QFrame, \
     QPushButton, QSpacerItem, QLabel, QHBoxLayout, QSizePolicy, QGroupBox, QComboBox, QCheckBox, QTabWidget, QTableView, \
     QIcon
 
 import anki
-from AnKindle import resource_rc
+from .kkLib import WeChatButton, MoreAddonButton, VoteButton, _ImageButton, UpgradeButton, AddonUpdater, HLine, VLine, \
+    IS_PY3K
+
+if IS_PY3K:
+    # noinspection PyUnresolvedReferences
+    # from AnKindle import resource_rc3 # todo
+    pass
+else:
+    # noinspection PyUnresolvedReferences
+    from AnKindle import resource_rc2
+
+    resource_rc = resource_rc2
+    resource_rc.qInitResources()
+
 from anki import notes, lang
 from anki.lang import currentLang
-from aqt import mw
+from aqt import mw, QSize
 from aqt.importing import importFile
 from aqt.progress import ProgressManager
 from aqt.studydeck import StudyDeck
 from aqt.utils import showInfo, getFile, showText, openLink, askUser
-from .kkLib import WeChatButton, MoreAddonButton, VoteButton, _ImageButton, UpgradeButton, AddonUpdater, HLine, VLine
 from .config import Config
 from .const import ADDON_CD, __version__, MDX_LIB_URL, DEFAULT_TEMPLATE
 from .db import KindleDB
 from .lang import _trans
 from .libs.mdict import mdict_query
 from .libs.mdict import readmdict
-
-resource_rc.qInitResources()
+from .kkLib import IS_PY3K
 
 
 class _HelpBtn(_ImageButton):
@@ -43,7 +54,9 @@ class _HelpBtn(_ImageButton):
     def on_clicked(self):
         if os.path.isfile(self.help_text_or_file):
             with open(self.help_text_or_file) as f:
-                text = f.read().decode("utf-8")
+                text = f.read()
+                if not IS_PY3K:
+                    text = text.decode("utf-8")
         else:
             text = self.help_text_or_file
         dlg, box = showText(text
@@ -58,7 +71,7 @@ class _SharedFrame(QFrame):
     def __init__(self, parent, updater=None):
         super(_SharedFrame, self).__init__(parent)
         self.l_h_widgets = QHBoxLayout(self)
-        wx = WeChatButton(self,os.path.join(os.path.dirname(__file__),"resource","AnKindle.jpg"))
+        wx = WeChatButton(self, os.path.join(os.path.dirname(__file__), "resource", "AnKindle.jpg"))
         wx.setObjectName("wx")
         self.l_h_widgets.addWidget(wx)
         vt = VoteButton(self, ADDON_CD)
@@ -71,7 +84,6 @@ class _SharedFrame(QFrame):
         self.l_h_widgets.addWidget(mr)
         self.l_h_widgets.addSpacerItem(QSpacerItem(10, 10, QSizePolicy.Expanding, QSizePolicy.Minimum, ))
         self.l_h_widgets.addWidget(_HelpBtn(self, self.help_txt))
-        self.l_h_widgets.setMargin(0)
         if updater:
             self.l_h_widgets.addWidget(UpgradeButton(self, updater))
 
@@ -82,8 +94,6 @@ class _SharedFrame(QFrame):
         else:
             loc = os.path.join(os.path.dirname(__file__), "resource", "help_en.html")
         return loc
-
-
 
 
 class Window(QDialog):
@@ -141,15 +151,15 @@ class Window(QDialog):
         self.l_lists = QVBoxLayout(self.grp)
 
         l_grp_top = QHBoxLayout()
-        self.l_lists.addWidget(self.lb_db, 0, QtCore.Qt.AlignCenter)
-        l_grp_top.addWidget(QLabel(_trans("Mandatory"), self), 0, QtCore.Qt.AlignLeft)
+        self.l_lists.addWidget(self.lb_db, 0, Qt.AlignCenter)
+        l_grp_top.addWidget(QLabel(_trans("Mandatory"), self), 0, Qt.AlignLeft)
         self.l_lists.addLayout(l_grp_top)
 
         l_language = QHBoxLayout()
         l_language.addWidget(self.btn_select_db)
         l_language.addWidget(VLine())
         l_language.addSpacerItem(QSpacerItem(1, 1, QSizePolicy.Minimum, QSizePolicy.Minimum))
-        l_language.addWidget(QLabel(_trans("language"), self), 0, QtCore.Qt.AlignLeft)
+        l_language.addWidget(QLabel(_trans("language"), self), 0, Qt.AlignLeft)
         l_language.addWidget(self.combo_lang)
         self.l_lists.addLayout(l_language)
         self.l_lists.addWidget(self.btn_1select_model)
@@ -159,10 +169,10 @@ class Window(QDialog):
         l.addWidget(self.btn_3select_mdx)
 
         self.l_lists.addWidget(HLine())
-        self.l_lists.addWidget(QLabel(_trans("Optional"), self), 0, QtCore.Qt.AlignLeft)
+        self.l_lists.addWidget(QLabel(_trans("Optional"), self), 0, Qt.AlignLeft)
         self.l_lists.addLayout(l)
 
-        self.btn_import = QPushButton(_trans("ONE CLICK IMPORT"), self,clicked=self.on_import)
+        self.btn_import = QPushButton(_trans("ONE CLICK IMPORT"), self, clicked=self.on_import)
         self.btn_import.setEnabled(False)
 
         self.btn_preview_words = QPushButton(self, clicked=self.on_preview_words)
@@ -320,7 +330,7 @@ class Window(QDialog):
     def on_select_deck_clicked(self, did, ignore_selection=False):
         nm = None
         if did:
-            nm = mw.col.decks.decks.get(did,{"name":''})["name"]
+            nm = mw.col.decks.decks.get(did, {"name": ''})["name"]
         else:
             ret = None
             if not ignore_selection:
@@ -480,26 +490,26 @@ class Window(QDialog):
     def word_langs(self):
         langs = set()
         for i, _ in enumerate(self.word_data):
-            (id, word, stem, lang, added_tm, usage, title, authors,category) = _
+            (id, word, stem, lang, added_tm, usage, title, authors, category) = _
             if lang:
                 langs.add(lang.upper())
         return list(langs)
 
-    def yield_one_word(self,filter_lang=''):
+    def yield_one_word(self, filter_lang=''):
         self._preload_data = None
         # validate db still online
         if not self.on_select_kindle_db(False):
             showInfo(_trans("ENSURE USB"), mw, type="warning", title=_trans("ANKINDLE"))
             return
-        progress = ProgressManager(self)
+        progress = ProgressManager(mw)
         progress.start(immediate=True)
         words = self.word_data
         for i, _ in enumerate(words):
             progress.update(_trans("IMPORTING") + "\n{} / {}".format(i + 1, len(words)), i, True)
-            (id, word, stem, lang, added_tm, usage, title, authors,category) = _
+            (id, word, stem, lang, added_tm, usage, title, authors, category) = _
             if lang and (lang.upper() != (filter_lang if filter_lang else self.current_mdx_lang)):
                 continue
-            yield id, word, stem, lang, added_tm, usage, title, authors,category
+            yield id, word, stem, lang, added_tm, usage, title, authors, category
 
         progress.finish()
 
@@ -526,7 +536,7 @@ class Window(QDialog):
         total_new = 0
         total_dup = 0
         for i, _ in enumerate(self.yield_one_word()):
-            (id, word, stem, lang, added_tm, usage, title, authors,category) = _
+            (id, word, stem, lang, added_tm, usage, title, authors, category) = _
             # region save new cards
             try:
                 note = notes.Note(mw.col, mw.col.models.models[unicode(self.model['id'])])
@@ -539,14 +549,14 @@ class Window(QDialog):
                 qry_word = stem if stem else word if word else ''
                 _usage = self.adapt_to_anki(usage.replace(word, u"<b>%s</b>" % word)) if usage else None
 
-                _note.fields[_note._fieldOrd('id')] = id
-                _note.fields[_note._fieldOrd('word')] = word
-                _note.fields[_note._fieldOrd('stem')] = stem
-                _note.fields[_note._fieldOrd('lang')] = lang
-                _note.fields[_note._fieldOrd('creation_tm')] = added_tm
-                _note.fields[_note._fieldOrd('usage')] = _usage
-                _note.fields[_note._fieldOrd('title')] = title
-                _note.fields[_note._fieldOrd('authors')] = authors
+                _note.fields[_note._fieldOrd('id')] = id if id else ''
+                _note.fields[_note._fieldOrd('word')] = word if word else ''
+                _note.fields[_note._fieldOrd('stem')] = stem if stem else ''
+                _note.fields[_note._fieldOrd('lang')] = lang if lang else ''
+                _note.fields[_note._fieldOrd('creation_tm')] = added_tm if added_tm else ''
+                _note.fields[_note._fieldOrd('usage')] = _usage if _usage else ''
+                _note.fields[_note._fieldOrd('title')] = title if title else ''
+                _note.fields[_note._fieldOrd('authors')] = authors if authors else ''
                 _note.fields[_note._fieldOrd('mdx_dict')] = self.adapt_to_anki(self.get_html(qry_word))
 
                 try:
@@ -563,31 +573,28 @@ class Window(QDialog):
             mw.col.autosave()
             # endregion
         mw.moveToState("deckBrowser")
-        showInfo(_trans("CREATED AND DUPLICATES") % (total_new, total_dup))
+        showInfo(_trans("CREATED AND DUPLICATES") % (total_new, total_dup), self)
 
     def on_preview_words(self):
-        self.preview_words_win.lang =self.current_mdx_lang
+        self.preview_words_win.lang = self.current_mdx_lang
         self.preview_words_win.refresh()
         self.preview_words_win.exec_()
 
 
-
 class WordsView(QDialog):
 
-    def __init__(self,parent):
+    def __init__(self, parent):
         super(WordsView, self).__init__(parent)
         self.setWindowTitle(_trans("ANKINDLE WORDS PREVIEW"))
         self.setWindowIcon(QIcon(QIcon(os.path.join(os.path.dirname(__file__), "resource", "word_list.png"))))
 
-
-        self.tabs = QTabWidget(self,currentChanged= self.on_current_tab_changed)
+        self.tabs = QTabWidget(self, currentChanged=self.on_current_tab_changed)
         self.learned_view = None
         self.new_view = None
-        self.btn_refresh = QPushButton(_trans("REFRESH"),clicked = self.refresh)
+        self.btn_refresh = QPushButton(_trans("REFRESH"), clicked=self.refresh)
         self.btn_refresh.setMinimumWidth(100)
-        self.btn_mark_as_mature = QPushButton(_trans("MARK MATURE"),clicked = self.mark_mature)
-        self.btn_mark_as_mature .setMinimumWidth(100)
-
+        self.btn_mark_as_mature = QPushButton(_trans("MARK MATURE"), clicked=self.mark_mature)
+        self.btn_mark_as_mature.setMinimumWidth(100)
 
         l = QVBoxLayout(self)
         l.addWidget(self.tabs)
@@ -595,27 +602,26 @@ class WordsView(QDialog):
         l_h = QHBoxLayout()
         l_h.addWidget(self.btn_refresh)
         l_h.addWidget(self.btn_mark_as_mature)
-        l_h.addSpacerItem(QSpacerItem(100,1,QSizePolicy.Expanding,QSizePolicy.Minimum))
+        l_h.addSpacerItem(QSpacerItem(100, 1, QSizePolicy.Expanding, QSizePolicy.Minimum))
         l.addLayout(l_h)
 
         self.lang = ''
 
-
     @property
-    def word_data(self,):
+    def word_data(self, ):
         if self.lang:
             new = list(self.parent().db.get_words(True))
 
             all = self.parent().db.get_words(False)
 
             old = [i for i in all if i not in new]
-            return list(filter(lambda l:l[3].strip().upper()==self.lang.strip().upper(),
-                               sorted(new+old,key=itemgetter(4),reverse=True)))
+            return list(filter(lambda l: l[3].strip().upper() == self.lang.strip().upper(),
+                               sorted(new + old, key=itemgetter(4), reverse=True)))
         else:
             return []
 
     def mark_mature(self):
-        progress = ProgressManager(self)
+        progress = ProgressManager(mw)
         progress.start(immediate=True)
         progress.update(_trans("Marking Words as Manure"))
 
@@ -627,12 +633,12 @@ class WordsView(QDialog):
 
         for idx in tableView.selectionModel().selectedRows():
             kindle_word_id = tableView.model().word_data[idx.row()][0]
-            self.parent().db.update_word_mature(kindle_word_id,100 if not category else 0)
+            self.parent().db.update_word_mature(kindle_word_id, 100 if not category else 0)
 
         progress.finish()
         self.refresh()
 
-    def on_current_tab_changed(self,index):
+    def on_current_tab_changed(self, index):
         self.btn_mark_as_mature.setText(_trans("MARK MATURE") if not index else _trans("MARK NEW"))
 
     def refresh(self):
@@ -652,12 +658,11 @@ class WordsView(QDialog):
         self.learned_model = WordsModel()
 
         for _ in self.word_data:
-            id, word, stem, lang, added_tm, usage, title, authors,category = _
-            if category==100 :
+            id, word, stem, lang, added_tm, usage, title, authors, category = _
+            if category == 100:
                 _data_learned.append(_)
             else:
                 _data_new.append(_)
-
 
         if (not self.new_view):
             self.new_view = QTableView(self.tabs)
@@ -674,26 +679,25 @@ class WordsView(QDialog):
             self.tabs.addTab(self.learned_view, _trans("MATURE"))
 
         self.set_table_look()
+
     def set_table_look(self):
-        for tableView in (self.new_view,self.learned_view):
+        for tableView in (self.new_view, self.learned_view):
             if not tableView:
                 continue
 
-
-            tableView.setMinimumSize(QtCore.QSize(800, 400))
-            tableView.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-            tableView.setFrameShape(QtGui.QFrame.NoFrame)
-            tableView.setFrameShadow(QtGui.QFrame.Plain)
-            tableView.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
-            tableView.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+            tableView.setMinimumSize(QSize(800, 400))
+            tableView.setContextMenuPolicy(Qt.ActionsContextMenu)
+            tableView.setFrameShape(QFrame.NoFrame)
+            tableView.setFrameShadow(QFrame.Plain)
+            tableView.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+            tableView.setEditTriggers(QAbstractItemView.NoEditTriggers)
             tableView.setTabKeyNavigation(False)
             tableView.setAlternatingRowColors(True)
-            tableView.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+            tableView.setSelectionBehavior(QAbstractItemView.SelectRows)
             tableView.horizontalHeader().setCascadingSectionResizes(False)
             tableView.horizontalHeader().setHighlightSections(False)
             tableView.horizontalHeader().setMinimumSectionSize(20)
             tableView.horizontalHeader().setSortIndicatorShown(True)
-
 
             tableView.horizontalHeader().hideSection(0)
             tableView.horizontalHeader().hideSection(3)
@@ -729,11 +733,11 @@ class WordsModel(QAbstractTableModel):
     def __init__(self):
         QAbstractTableModel.__init__(self)
         self.sortKey = None
-        self.activeCols = ['id',_trans('word'), _trans('stem'), 'lang', _trans('added_tm'),
-        _trans('usage'), _trans('title'), _trans('authors'),'category']
+        self.activeCols = ['id', _trans('word'), _trans('stem'), 'lang', _trans('added_tm'),
+                           _trans('usage'), _trans('title'), _trans('authors'), 'category']
         self.word_data = None
 
-    def set_data(self,data):
+    def set_data(self, data):
         self.word_data = data
 
     def rowCount(self, index):
@@ -764,7 +768,7 @@ class WordsModel(QAbstractTableModel):
         elif role == Qt.TextAlignmentRole:
             align = Qt.AlignVCenter
             return align
-        elif role == Qt.DisplayRole or role == Qt.EditRole or role==Qt.ToolTipRole:
+        elif role == Qt.DisplayRole or role == Qt.EditRole or role == Qt.ToolTipRole:
             return self.columnData(index)
         else:
             return
@@ -781,10 +785,11 @@ class WordsModel(QAbstractTableModel):
     def flags(self, index):
         return Qt.ItemFlag(Qt.ItemIsEnabled |
                            Qt.ItemIsSelectable)
+
     def columnType(self, column):
         return self.activeCols[column]
 
-    def columnData(self,index):
+    def columnData(self, index):
         """
 
         :type index: QModelIndex

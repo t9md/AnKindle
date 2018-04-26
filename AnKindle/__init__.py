@@ -2,7 +2,7 @@
 # Created: 3/27/2018
 # Project : AnKindle
 
-from PyQt4.QtGui import QAction
+from aqt import QAction
 
 from anki.collection import _Collection
 from aqt import mw
@@ -71,3 +71,19 @@ class AnKindleAddon:
         """
 
         return mw.col
+
+
+# region Main Entry
+from anki.hooks import addHook
+
+
+def start():
+    if const.HAS_SET_UP:
+        return
+    rr = AnKindleAddon()
+    rr.perform_hooks(addHook)
+    const.HAS_SET_UP = True
+
+
+addHook("profileLoaded", start)
+# endregion

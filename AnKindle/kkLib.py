@@ -14,7 +14,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import httplib
+import sys
+
+IS_PY3K = sys.version[0] == '3'
+
+if IS_PY3K:
+    from http import client as httplib
+    from urllib import request as web
+    from urllib.request import urlretrieve
+
+    unicode = str
+else:
+    import httplib
+    import urllib2 as web
+    from urllib import urlretrieve
+
 import json
 from datetime import datetime
 from functools import partial
@@ -28,18 +42,8 @@ from aqt import *
 from aqt.downloader import download
 from aqt.utils import showInfo, openLink
 
-try:
-    import urllib2 as web
-    from urllib import urlretrieve
-except ImportError:
-    from urllib import request as web
-    from urllib.request import urlretrieve
-
 ASYNC_HOOKS = []
 CACHED_VALUES = []
-
-
-# region Meta Classes
 
 
 class MetaConfigObj(type):
@@ -633,8 +637,16 @@ class MoreAddonButton(_ImageButton):
         else:
             self.m = MoreAddonMenu(self, self.json_file)
             self.m.setObjectName("mmr")
-            self.setMenu(self.m)
             self.setVisible(True)
+
+            if IS_PY3K:
+                def _show_menu():
+                    self.m.move(QCursor.pos())
+                    self.m.show()
+
+                self.clicked.connect(lambda clicked: _show_menu())
+            else:
+                self.setMenu(self.m)
 
 
 class UpgradeButton(_ImageButton):
