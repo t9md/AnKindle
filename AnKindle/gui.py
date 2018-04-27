@@ -73,7 +73,9 @@ class _SharedFrame(QFrame):
         self.l_h_widgets.addSpacerItem(QSpacerItem(10, 10, QSizePolicy.Expanding, QSizePolicy.Minimum, ))
         self.l_h_widgets.addWidget(_HelpBtn(self, self.help_txt))
         if updater:
-            self.l_h_widgets.addWidget(UpgradeButton(self, updater))
+            up_btn = UpgradeButton(self, updater)
+            up_btn.setIcon(os.path.join(os.path.dirname(__file__), "resource", "update.png"))
+            self.l_h_widgets.addWidget(up_btn)
 
     @property
     def help_txt(self):

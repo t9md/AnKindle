@@ -45,6 +45,24 @@ from aqt.utils import showInfo, openLink
 ASYNC_HOOKS = []
 CACHED_VALUES = []
 
+# region Consts
+trans_dict = {
+    "ASK UPDATE NEW VERSION": {'zh_CN': u'新版本可用，是否更新？',
+                               'en': "There's new version available, please confirm to update."},
+    "UPDATE OK": {'zh_CN': u'更新完毕，请重启Anki。', 'en': "Completed! Please restart Anki."},
+    "CONFIGURATION": {'zh_CN': u'设置', 'en': "Configuration"},
+    "WECHAT CHANNEL": {'zh_CN': u'微信公众号', 'en': "WeChat Channel"},
+    "MORE ADDON": {'zh_CN': u'更多插件', 'en': "More Addon"},
+    "NEW VERSION ALERT": {'zh_CN': u'新版本可用', 'en': "New Version Available"},
+    "VOTE ADDON": {'zh_CN': u"赞！", 'en': "UpVote！"},
+
+}
+# endregion
+
+trans = lambda s: getTrans(s, trans_dict)
+
+
+# region Meta Classes
 
 class MetaConfigObj(type):
     """
@@ -409,7 +427,7 @@ class AddonUpdater(QThread):
         return QMessageBox.question(
             self.parent(),
             self.addon_name,
-            _("ASK UPDATE NEW VERSION"),
+            trans("ASK UPDATE NEW VERSION"),
             QMessageBox.Yes | QMessageBox.No
         )
 
@@ -419,7 +437,7 @@ class AddonUpdater(QThread):
 
     def alert_update_success(self):
         QMessageBox.information(self.parent(), self.addon_name,
-                                _("UPDATE OK"))
+                                trans("UPDATE OK"))
 
     def upgrade_using_anki(self):
         if MetaConfigObj.IsAnki21():
@@ -492,7 +510,7 @@ class ClickCloseDialog(QDialog):
 
         self.l.addWidget(self.image_label)
 
-        self.setToolTip(_("CLICK CLOSE"))
+        self.setToolTip(trans("CLICK CLOSE"))
         self.set_qr(img_file)
 
     def set_qr(self, qr_file):
@@ -534,7 +552,7 @@ class JsonConfigEditor(QDialog):
 
         def retranslateUi(self, Dialog):
             _translate = QCoreApplication.translate
-            Dialog.setWindowTitle(_("CONFIGURATION"))
+            Dialog.setWindowTitle(trans("CONFIGURATION"))
 
     def __init__(self, dlg, json_file):
         super(JsonConfigEditor, self).__init__(dlg)
@@ -558,7 +576,7 @@ class JsonConfigEditor(QDialog):
         try:
             self.conf = json.loads(txt)
         except Exception as e:
-            showInfo(_("Invalid configuration: ") + repr(e))
+            showInfo(trans("Invalid configuration: ") + repr(e))
             return
 
         with open(self.json, "w") as f:
@@ -584,7 +602,7 @@ class WeChatButton(_ImageButton):
     def __init__(self, parent, qr_file):
         super(WeChatButton, self).__init__(parent, ":/icon/wechat.png")
         self.setObjectName("btn_wechat")
-        self.setToolTip(_("WECHAT CHANNEL"))
+        self.setToolTip(trans("WECHAT CHANNEL"))
         self.setWhatsThis(self.toolTip())
         self.clicked.connect(self.on_clicked)
         self._qr_file_nm = qr_file
@@ -602,7 +620,7 @@ class VoteButton(_ImageButton):
         self.addon_cd = addon_cd
         self.clicked.connect(self.on_clicked)
         self.setObjectName("btn_vote")
-        self.setToolTip(_(u"VOTE ADDON"))
+        self.setToolTip(trans("VOTE ADDON"))
 
     def on_clicked(self):
         openLink("https://ankiweb.net/shared/review/%s" % self.addon_cd)
@@ -624,7 +642,7 @@ class MoreAddonButton(_ImageButton):
     def __init__(self, parent):
         super(MoreAddonButton, self).__init__(parent, ":/icon/more.png")
         self.setObjectName("btn_more_addon")
-        self.setToolTip(_("MORE ADDON"))
+        self.setToolTip(trans("MORE ADDON"))
         self.json_file = "_more_addons.json"
         self._thr_download_json = MoreAddonButton._download_json(self, self.json_file)
         self._thr_download_json.finished.connect(self.setup_menu)
@@ -653,7 +671,7 @@ class UpgradeButton(_ImageButton):
     def __init__(self, parent, updater):
         super(UpgradeButton, self).__init__(parent, ":/icon/alert.png")
         self.setObjectName("btn_updater")
-        self.setToolTip(_("NEW VERSION ALERT"))
+        self.setToolTip(trans("NEW VERSION ALERT"))
         self.updater = updater
         self.updater.new_version.connect(self.on_addon_new_version)
         self.updater.update_success.connect(self.on_addon_updated)
