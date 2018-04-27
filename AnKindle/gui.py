@@ -213,9 +213,9 @@ class Window(QDialog):
     def set_model_deck_button(self, on_combo_changed=False):
         model_id = self.lang_config.get("model_id")
         deck_id = self.lang_config.get("deck_id")
-        if model_id and model_id in [six.ensure_str(m['id']) for m in self.mod_list] or on_combo_changed:
+        if model_id and model_id in [str(m['id']) for m in self.mod_list] or on_combo_changed:
             self.on_select_model_clicked(model_id, on_combo_changed)
-        if deck_id and deck_id in [six.ensure_str(m['id']) for m in self.deck_list] or on_combo_changed:
+        if deck_id and deck_id in [str(m['id']) for m in self.deck_list] or on_combo_changed:
             self.on_select_deck_clicked(deck_id, on_combo_changed)
 
     def _validate_clicks(self):
@@ -299,7 +299,7 @@ class Window(QDialog):
             self.btn_1select_model.setText(
                 u'%s [%s]' % (_trans("NOTE TYPE"), nm))
 
-            self.set_lang_config(model_id=six.ensure_str(self.model['id']) if self.model else u'')
+            self.set_lang_config(model_id=str(self.model['id']) if self.model else u'')
         else:
             self.btn_1select_model.setText(_trans("SELECT MODEL"))
         self._validate_clicks()
@@ -333,7 +333,7 @@ class Window(QDialog):
             self.btn_2select_deck.setText(
                 u'%s [%s]' % (_trans("DECK TYPE"), nm))
 
-            self.set_lang_config(deck_id=six.ensure_str(self.deck['id']) if self.deck else u'')
+            self.set_lang_config(deck_id=str(self.deck['id']) if self.deck else u'')
         else:
             self.btn_2select_deck.setText(_trans("SELECT DECK"))
 
@@ -527,7 +527,7 @@ class Window(QDialog):
             (id, word, stem, lang, added_tm, usage, title, authors, category) = _
             # region save new cards
             try:
-                note = notes.Note(mw.col, mw.col.models.models[six.ensure_str(self.model['id'])])
+                note = notes.Note(mw.col, mw.col.models.models[str(self.model['id'])])
             except KeyError:
                 continue
             note.model()['did'] = self.deck['id']
