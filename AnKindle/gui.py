@@ -7,26 +7,13 @@ import sqlite3
 from functools import partial
 from operator import itemgetter
 
-from .kkLib import unicode
+import anki
 from aqt import QAbstractTableModel, Qt, QModelIndex, QAbstractItemView
 from aqt import QDialog, QVBoxLayout, QFrame, \
     QPushButton, QSpacerItem, QLabel, QHBoxLayout, QSizePolicy, QGroupBox, QComboBox, QCheckBox, QTabWidget, QTableView, \
     QIcon
-
-import anki
-from .kkLib import WeChatButton, MoreAddonButton, VoteButton, _ImageButton, UpgradeButton, AddonUpdater, HLine, VLine, \
-    IS_PY3K
-
-if IS_PY3K:
-    # noinspection PyUnresolvedReferences
-    # from AnKindle import resource_rc3 # todo
-    pass
-else:
-    # noinspection PyUnresolvedReferences
-    from AnKindle import resource_rc2
-
-    resource_rc = resource_rc2
-    resource_rc.qInitResources()
+from .kkLib import WeChatButton, MoreAddonButton, VoteButton, _ImageButton, UpgradeButton, AddonUpdater, HLine, VLine
+from .libs import six
 
 from anki import notes, lang
 from anki.lang import currentLang
@@ -72,6 +59,7 @@ class _SharedFrame(QFrame):
         super(_SharedFrame, self).__init__(parent)
         self.l_h_widgets = QHBoxLayout(self)
         wx = WeChatButton(self, os.path.join(os.path.dirname(__file__), "resource", "AnKindle.jpg"))
+        wx.setIcon( os.path.join(os.path.dirname(__file__), "resource", "wechat.png"))
         wx.setObjectName("wx")
         self.l_h_widgets.addWidget(wx)
         vt = VoteButton(self, ADDON_CD)
@@ -225,9 +213,9 @@ class Window(QDialog):
     def set_model_deck_button(self, on_combo_changed=False):
         model_id = self.lang_config.get("model_id")
         deck_id = self.lang_config.get("deck_id")
-        if model_id and model_id in [unicode(m['id']) for m in self.mod_list] or on_combo_changed:
+        if model_id and model_id in [six.ensure_str(m['id']) for m in self.mod_list] or on_combo_changed:
             self.on_select_model_clicked(model_id, on_combo_changed)
-        if deck_id and deck_id in [unicode(m['id']) for m in self.deck_list] or on_combo_changed:
+        if deck_id and deck_id in [six.ensure_str(m['id']) for m in self.deck_list] or on_combo_changed:
             self.on_select_deck_clicked(deck_id, on_combo_changed)
 
     def _validate_clicks(self):
@@ -311,7 +299,7 @@ class Window(QDialog):
             self.btn_1select_model.setText(
                 u'%s [%s]' % (_trans("NOTE TYPE"), nm))
 
-            self.set_lang_config(model_id=unicode(self.model['id']) if self.model else u'')
+            self.set_lang_config(model_id=six.ensure_str(self.model['id']) if self.model else u'')
         else:
             self.btn_1select_model.setText(_trans("SELECT MODEL"))
         self._validate_clicks()
@@ -345,7 +333,7 @@ class Window(QDialog):
             self.btn_2select_deck.setText(
                 u'%s [%s]' % (_trans("DECK TYPE"), nm))
 
-            self.set_lang_config(deck_id=unicode(self.deck['id']) if self.deck else u'')
+            self.set_lang_config(deck_id=six.ensure_str(self.deck['id']) if self.deck else u'')
         else:
             self.btn_2select_deck.setText(_trans("SELECT DECK"))
 
@@ -366,7 +354,7 @@ class Window(QDialog):
             self.btn_3select_mdx.setText(
                 u'%s [%s]' % (_trans("MDX TYPE"), os.path.splitext(os.path.basename(self.mdx))[0]))
             self.builder = mdict_query.IndexBuilder(self.mdx)
-            self.set_lang_config(mdx_path=unicode(self.mdx) if self.mdx else u'')
+            self.set_lang_config(mdx_path=six.ensure_str(self.mdx) if self.mdx else u'')
         else:
             self.btn_3select_mdx.setText(_trans("SELECT MDX"))
             self.builder = None
@@ -378,7 +366,7 @@ class Window(QDialog):
             return html
 
         self.builder.check_build()
-        result = self.builder.mdx_lookup(word)  # self.word: unicode
+        result = self.builder.mdx_lookup(word)  # self.word: six.ensure_str
         if result:
             if result[0].upper().find(u"@@@LINK=") > -1:
                 # redirect to a new word behind the equal symol.
@@ -539,7 +527,7 @@ class Window(QDialog):
             (id, word, stem, lang, added_tm, usage, title, authors, category) = _
             # region save new cards
             try:
-                note = notes.Note(mw.col, mw.col.models.models[unicode(self.model['id'])])
+                note = notes.Note(mw.col, mw.col.models.models[six.ensure_str(self.model['id'])])
             except KeyError:
                 continue
             note.model()['did'] = self.deck['id']
