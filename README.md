@@ -3,6 +3,9 @@ Yet another Kindle vocab importer for Anki with MDX dicts support
 
 # FEATURE:
 
+- Anki 2.0 & 2.1 compatible
+- 兼容 Anki 2.0 & 2.1
+
 - One-Click-Import Kindle vocabulary
 - 一键导入Kindle的生词
 
