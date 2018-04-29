@@ -54,6 +54,13 @@ trans = {
                                                                u'another MDX file.'},
     "ENSURE USB": {'zh_CN': u'请确保Kindle已经接入电脑。',
                    'en': u'Please ensure Kindle has been adtapted to your machine.'},
+    "USER DEFINED TEMPLATE ALERT": {'zh_CN': u"""
+    <p>您当前没有使用任何AnKindle的模板，<b>插件将自动使用默认模板</b>。</p>
+    <p>关于如何制作和使用自定义用于的AnKindle的模板，请参考【帮助】文档或者【知乎】搜索AnKindle。</p>
+    """, 'en': u"""
+    <p>There's no available AnKindle models，<b>add-on will use default template for importing</b>。</p>
+    <p>Please refer to [Help] documentation for customizing template for your Kindle vocab.</p>
+    """},
     "ANKINDLE WORDS PREVIEW": {'zh_CN': u'生词预览',
                                'en': u'Words Preview'},
 
