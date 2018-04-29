@@ -39,9 +39,9 @@ trans = {
                               'en': u'None of MDX dictionaries are selected, '
                                     u'explanations will be lost in your imports. Confirm to continue?'},
     'OPTIONAL': {'zh_CN': u'<b>可选：</b>', 'en': u'<b>Optional:</b>'},
-    'USE LATEST TEMPLATE': {'zh_CN': u'使用最新AnKindle模板', 'en': u'Use latest AnKindle Template'},
+    'USE LATEST TEMPLATE': {'zh_CN': u'默认配套模板', 'en': u'Default Card Template'},
     'LANGUAGE': {'zh_CN': u'生词语言类型:', 'en': u'Word Language: '},
-    'DOWNLOAD MDX': {'zh_CN': u'下载MDX词典', 'en': u'Download MDX Dictionaries'},
+    'MORE_DOC': {'zh_CN': u'更多模板与教程', 'en': u'More Templates & Documentation'},
     'MATURE': {'zh_CN': u'已掌握', 'en': u'Mature'},
     'NEW WORDS': {'zh_CN': u'新词', 'en': u'New'},
     'MDX MEMORY ERROR': {'zh_CN': u'无法读取MDX词典内容，请更换词典文件。',
@@ -59,7 +59,7 @@ trans = {
     <p>关于如何制作和使用自定义用于的AnKindle的模板，请参考【帮助】文档或者【知乎】搜索AnKindle。</p>
     """, 'en': u"""
     <p>There's no available AnKindle models，<b>add-on will use default template for importing</b>。</p>
-    <p>Please refer to [Help] documentation for customizing template for your Kindle vocab.</p>
+    <p>Please refer to [Help] docs for customizing template for your Kindle vocab.</p>
     """},
     "ANKINDLE WORDS PREVIEW": {'zh_CN': u'生词预览',
                                'en': u'Words Preview'},

@@ -1,11 +1,10 @@
 #-*- coding:utf-8 -*-
-from struct import unpack
-from warnings import warn
 import gzip
 import hashlib
+import os
 import re
 import warnings
-import os
+from struct import unpack
 
 
 class _StarDictIfo(object):
@@ -413,13 +412,13 @@ class Dictionary(dict):
     All items of this dictionary are writable and dict is expandable itself,
     but changes are not stored anywhere and available in runtime only.
 
-    We assume in this documentation that "x" or "y" is instances of the
+    We assume in this docs that "x" or "y" is instances of the
     StarDictDict class and "x.{ifo,idx{,.gz},dict{,.dz),syn}" or
     "y.{ifo,idx{,.gz},dict{,.dz),syn}" is files of the corresponding stardict
     dictionaries.
 
 
-    Following documentation is from the "dict" class an is subkect to rewrite
+    Following docs is from the "dict" class an is subkect to rewrite
     in further impleneted methods:
 
     """

@@ -21,7 +21,7 @@ from aqt.progress import ProgressManager
 from aqt.studydeck import StudyDeck
 from aqt.utils import showInfo, getFile, showText, openLink, askUser
 from .config import Config
-from .const import ADDON_CD, __version__, MDX_LIB_URL, DEFAULT_TEMPLATE
+from .const import ADDON_CD, __version__, ONLINE_DOC_URL, DEFAULT_TEMPLATE
 from .db import KindleDB
 from .kkLib import IS_PY3K
 from .kkLib import WeChatButton, MoreAddonButton, VoteButton, _ImageButton, UpgradeButton, AddonUpdater, HLine, VLine
@@ -48,9 +48,9 @@ class _HelpBtn(_ImageButton):
             text = self.help_text_or_file
         dlg, box = showText(text
                             , self.parent(), "html", title=anki.lang._("Help"), run=False)
-        btn_download_mdx = QPushButton(_trans("DOWNLOAD MDX"), dlg)
-        btn_download_mdx.clicked.connect(partial(openLink, MDX_LIB_URL))
-        dlg.layout().insertWidget(1, btn_download_mdx)
+        online_template_doc = QPushButton(_trans("MORE_DOC"), dlg)
+        online_template_doc.clicked.connect(partial(openLink, ONLINE_DOC_URL))
+        dlg.layout().insertWidget(1, online_template_doc)
         dlg.exec_()
 
 
@@ -59,7 +59,7 @@ class _SharedFrame(QFrame):
         super(_SharedFrame, self).__init__(parent)
         self.l_h_widgets = QHBoxLayout(self)
         wx = WeChatButton(self, os.path.join(os.path.dirname(__file__), "resource", "AnKindle.jpg"))
-        wx.setIcon( os.path.join(os.path.dirname(__file__), "resource", "wechat.png"))
+        wx.setIcon(os.path.join(os.path.dirname(__file__), "resource", "wechat.png"))
         wx.setObjectName("wx")
         self.l_h_widgets.addWidget(wx)
         vt = VoteButton(self, ADDON_CD)
@@ -312,9 +312,12 @@ class Window(QDialog):
             importFile(mw, DEFAULT_TEMPLATE)
 
         edit = QPushButton(_trans("USE LATEST TEMPLATE"),
-                           clicked=lambda: importFile(mw, DEFAULT_TEMPLATE))
+                           clicked=lambda x: importFile(mw, DEFAULT_TEMPLATE))
+
+
         ret = StudyDeck(mw, names=lambda: sorted([f['name'] for f in self.mod_list]),
-                        accept=anki.lang._("Choose"), title=_trans("NOTE TYPE"), parent=self, buttons=[edit],
+                        accept=anki.lang._("Choose"), title=_trans("NOTE TYPE"),
+                        parent=self, buttons=[edit], help='',
                         cancel=True)
         return ret
 
