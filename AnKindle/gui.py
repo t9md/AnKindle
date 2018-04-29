@@ -308,6 +308,7 @@ class Window(QDialog):
 
     def select_model(self):
         if not self.mod_list:
+            showText(_trans("USER DEFINED TEMPLATE ALERT"), self, "html", title=_trans("AnKindle"))
             importFile(mw, DEFAULT_TEMPLATE)
 
         edit = QPushButton(_trans("USE LATEST TEMPLATE"),
@@ -540,7 +541,9 @@ class Window(QDialog):
                 qry_word = stem if stem else word if word else ''
                 _usage = self.adapt_to_anki(usage.replace(word, u"<b>%s</b>" % word)) if usage else None
 
-                _note.fields[_note._fieldOrd('id')] = id if id else ''
+                _id_in_field = re.sub("[^0-9a-zA-Z]", "", word + usage).strip().upper()
+
+                _note.fields[_note._fieldOrd('id')] = _id_in_field if _id_in_field else ''
                 _note.fields[_note._fieldOrd('word')] = word if word else ''
                 _note.fields[_note._fieldOrd('stem')] = stem if stem else ''
                 _note.fields[_note._fieldOrd('lang')] = lang if lang else ''
