@@ -24,8 +24,7 @@ from .config import Config
 from .const import ADDON_CD, __version__, MDX_LIB_URL, DEFAULT_TEMPLATE
 from .db import KindleDB
 from .kkLib import IS_PY3K
-from .kkLib import WeChatButton, MoreAddonButton, VoteButton, _ImageButton, UpgradeButton, AddonUpdater, HLine, VLine, \
-    MetaConfigObj
+from .kkLib import WeChatButton, MoreAddonButton, VoteButton, _ImageButton, UpgradeButton, AddonUpdater, HLine, VLine
 from .lang import _trans
 from .libs import six
 from .libs.mdict import mdict_query
@@ -518,16 +517,6 @@ class Window(QDialog):
                 return
             dict_nm = os.path.splitext(os.path.basename(mdx_dict._fname))[0]
 
-            # copy css files
-            mdx_dict_dir = os.path.split(self.mdx)[0]
-
-            for root, dirs, files in os.walk(mdx_dict_dir):
-                for css in [css for css in files if css.upper().endswith(".CSS")]:
-                    shutil.copy(
-                        os.path.join(root, css),
-                        os.path.join(MetaConfigObj.MediaFolder(), css)
-                    )
-
         else:
             ret = askUser(
                 _trans("ALERT FOR MISSING MDX"), self, defaultno=False, title=_trans("ANKINDLE")
@@ -559,7 +548,7 @@ class Window(QDialog):
                 _note.fields[_note._fieldOrd('usage')] = _usage if _usage else ''
                 _note.fields[_note._fieldOrd('title')] = title if title else ''
                 _note.fields[_note._fieldOrd('authors')] = authors if authors else ''
-                _note.fields[_note._fieldOrd('mdx_dict')] = self.adapt_to_anki(self.get_html(qry_word))
+                _note.fields[_note._fieldOrd('mdx_dict')] = self.get_html(qry_word)
 
                 try:
                     _note.fields[_note._fieldOrd('mdx_name')] = dict_nm
@@ -574,6 +563,21 @@ class Window(QDialog):
                 total_dup += 1
             mw.col.autosave()
             # endregion
+
+        # copy css files
+        mdx_dict_dir = os.path.split(self.mdx)[0]
+        include_mdx_extras = ['.CSS', '.JS']
+        for root, dirs, files in os.walk(mdx_dict_dir):
+            for _mfile in [css for css in files if os.path.splitext(css)
+                                                   [1].strip().upper() in include_mdx_extras]:
+                _nfile = _mfile
+                if _mfile in self.missed_css:
+                    _nfile = "_" + _mfile
+                shutil.copy(
+                    os.path.join(root, _mfile),
+                    _nfile
+                )
+
         mw.moveToState("deckBrowser")
         showInfo(_trans("CREATED AND DUPLICATES") % (total_new, total_dup), self)
 
