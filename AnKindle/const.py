@@ -9,7 +9,7 @@ __version__ = "0.5.10"
 HAS_SET_UP = False
 ADDON_CD = 1016931132
 DEBUG = False
-ONLINE_DOC_URL = "https://github.com/upday7/AnKindle/tree/master/AnKindle/docs/DOC.md"
+ONLINE_DOC_URL = "https://github.com/upday7/AnKindle/blob/master/docs/DOC.md"
 DEFAULT_TEMPLATE = six.ensure_str(os.path.join(os.path.dirname(__file__), u"resource", u"AnKindle.apkg"))
 SQL_SELECT_WORDS = """
 SELECT
