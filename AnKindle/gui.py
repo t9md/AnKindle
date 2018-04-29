@@ -3,20 +3,18 @@
 # Project : AnKindle
 import os
 import re
+import shutil
 import sqlite3
 from functools import partial
 from operator import itemgetter
 
 import anki
+from anki import notes, lang
+from anki.lang import currentLang
 from aqt import QAbstractTableModel, Qt, QModelIndex, QAbstractItemView
 from aqt import QDialog, QVBoxLayout, QFrame, \
     QPushButton, QSpacerItem, QLabel, QHBoxLayout, QSizePolicy, QGroupBox, QComboBox, QCheckBox, QTabWidget, QTableView, \
     QIcon
-from .kkLib import WeChatButton, MoreAddonButton, VoteButton, _ImageButton, UpgradeButton, AddonUpdater, HLine, VLine
-from .libs import six
-
-from anki import notes, lang
-from anki.lang import currentLang
 from aqt import mw, QSize
 from aqt.importing import importFile
 from aqt.progress import ProgressManager
@@ -25,10 +23,13 @@ from aqt.utils import showInfo, getFile, showText, openLink, askUser
 from .config import Config
 from .const import ADDON_CD, __version__, MDX_LIB_URL, DEFAULT_TEMPLATE
 from .db import KindleDB
+from .kkLib import IS_PY3K
+from .kkLib import WeChatButton, MoreAddonButton, VoteButton, _ImageButton, UpgradeButton, AddonUpdater, HLine, VLine, \
+    MetaConfigObj
 from .lang import _trans
+from .libs import six
 from .libs.mdict import mdict_query
 from .libs.mdict import readmdict
-from .kkLib import IS_PY3K
 
 
 class _HelpBtn(_ImageButton):
@@ -516,6 +517,17 @@ class Window(QDialog):
                 showInfo(_trans("MDX TYPE ERROR"), self, type="warning", title=_trans("ANKINDLE"))
                 return
             dict_nm = os.path.splitext(os.path.basename(mdx_dict._fname))[0]
+
+            # copy css files
+            mdx_dict_dir = os.path.split(self.mdx)[0]
+
+            for root, dirs, files in os.walk(mdx_dict_dir):
+                for css in [css for css in files if css.upper().endswith(".CSS")]:
+                    shutil.copy(
+                        os.path.join(root, css),
+                        os.path.join(MetaConfigObj.MediaFolder(), css)
+                    )
+
         else:
             ret = askUser(
                 _trans("ALERT FOR MISSING MDX"), self, defaultno=False, title=_trans("ANKINDLE")
