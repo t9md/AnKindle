@@ -571,18 +571,19 @@ class Window(QDialog):
             # endregion
 
         # copy css files
-        mdx_dict_dir = os.path.split(self.mdx)[0]
-        include_mdx_extras = ['.CSS', '.JS']
-        for root, dirs, files in os.walk(mdx_dict_dir):
-            for _mfile in [css for css in files if os.path.splitext(css)
-                                                   [1].strip().upper() in include_mdx_extras]:
-                _nfile = _mfile
-                if _mfile in self.missed_css:
-                    _nfile = "_" + _mfile
-                shutil.copy(
-                    os.path.join(root, _mfile),
-                    _nfile
-                )
+        if self.mdx:
+            mdx_dict_dir = os.path.split(self.mdx)[0]
+            include_mdx_extras = ['.CSS', '.JS']
+            for root, dirs, files in os.walk(mdx_dict_dir):
+                for _mfile in [css for css in files if os.path.splitext(css)
+                                                       [1].strip().upper() in include_mdx_extras]:
+                    _nfile = _mfile
+                    if _mfile in self.missed_css:
+                        _nfile = "_" + _mfile
+                    shutil.copy(
+                        os.path.join(root, _mfile),
+                        _nfile
+                    )
 
         mw.moveToState("deckBrowser")
         showInfo(_trans("CREATED AND DUPLICATES") % (total_new, total_dup), self)
