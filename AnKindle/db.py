@@ -4,7 +4,7 @@
 
 import os
 
-from AnKindle.config import Config
+from .config import Config
 from anki.db import DB
 from anki.utils import isWin
 from aqt import mw
