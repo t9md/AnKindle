@@ -15,21 +15,21 @@ _style = u"""
 
 trans = {
     'ANKINDLE': {'zh_CN': u'AnKindle', 'en': u'AnKindle'},
-    'NOTE TYPE': {'zh_CN': u'保存为笔记类型', 'en': u'Save as Note'},
-    'DECK TYPE': {'zh_CN': u'保存到记忆库', 'en': u'Save to Deck'},
-    'MDX TYPE': {'zh_CN': u'查询MDX字典', 'en': u'Query Dict'},
-    'SELECT MODEL': {'zh_CN': u'保存为笔记类型', 'en': u'Save as Note'},
-    'SELECT DECK': {'zh_CN': u'保存到记忆库', 'en': u'Save to deck'},
+    'NOTE TYPE': {'zh_CN': u'保存为笔记类型', 'en': u'Note Type'},
+    'DECK TYPE': {'zh_CN': u'保存到记忆库', 'en': u'Deck Name'},
+    'MDX TYPE': {'zh_CN': u'查询MDX字典', 'en': u'MDX Dict'},
+    'SELECT MODEL': {'zh_CN': u'保存为笔记类型', 'en': u'Choose Note Type'},
+    'SELECT DECK': {'zh_CN': u'保存到记忆库', 'en': u'Choose Deck'},
     'SELECT MDX': {'zh_CN': u'（可选） 选择MDX字典', 'en': u'(Optional) MDX Dict'},
     'CREATED AND DUPLICATES': {'zh_CN': u'新建：%s 张卡片。\n重复：%s 张卡片。',
                                'en': u'Created: %s cards.\nDuplicates: %s cards.'},
     'NONE': {'zh_CN': u'无', 'en': u'None'},
-    'CANNOT FIND KINDLE VOLUME': {'zh_CN': u'** 无法找到 Kindle 数据库 **', 'en': u'** Cannot Find Kindle Db **'},
+    'CANNOT FIND KINDLE VOLUME': {'zh_CN': u'** 无法找到 Kindle 数据库 **', 'en': u'** Missing Kindle DB **'},
     'USING DB': {'zh_CN': u'读取%s', 'en': u'Reading %s'},
     'HELP': {'zh_CN': u'帮助', 'en': u'Help'},
     'IMPORT': {'zh_CN': u'导入设置', 'en': u'Import Config'},
-    'SELECT KINDLE DB': {'zh_CN': u'重新选择Kindle数据库文件', 'en': u'Re-select Kindle Database File'},
-    'ONLY NEW WORDS': {'zh_CN': u'仅新词', 'en': u'Only New'},
+    'SELECT KINDLE DB': {'zh_CN': u'重新选择Kindle数据库文件', 'en': u'Re-select Kindle database file'},
+    'ONLY NEW WORDS': {'zh_CN': u'仅新词', 'en': u'New Word'},
     'ONE CLICK IMPORT': {'zh_CN': u'一键导入', 'en': u'One-Click-Import'},
     'GET KINDLE DB': {'zh_CN': u'请手动选择Kindle数据库，。', 'en': u'Please select Kindle vocab database.'},
     'IMPORTING': {'zh_CN': u'正在导入生词', 'en': u'Importing'},
@@ -40,7 +40,7 @@ trans = {
                                     u'explanations will be lost in your imports. Confirm to continue?'},
     'OPTIONAL': {'zh_CN': u'<b>可选：</b>', 'en': u'<b>Optional:</b>'},
     'USE LATEST TEMPLATE': {'zh_CN': u'默认配套模板', 'en': u'Default Card Template'},
-    'LANGUAGE': {'zh_CN': u'生词语言类型:', 'en': u'Word Language: '},
+    'LANGUAGE': {'zh_CN': u'生词语言类型:', 'en': u'Language: '},
     'MORE_DOC': {'zh_CN': u'更多模板与教程', 'en': u'More Templates & Documentation'},
     'MATURE': {'zh_CN': u'已掌握', 'en': u'Mature'},
     'NEW WORDS': {'zh_CN': u'新词', 'en': u'New'},
@@ -53,7 +53,7 @@ trans = {
     'MDX TYPE ERROR': {'zh_CN': u'无法读取MDX词典内容，请更换词典文件。', 'en': u'Type error when loading MDX, please switch '
                                                                u'another MDX file.'},
     "ENSURE USB": {'zh_CN': u'请确保Kindle已经接入电脑。',
-                   'en': u'Please ensure Kindle has been adtapted to your machine.'},
+                   'en': u'Please ensure Kindle has been adapted to your machine.'},
     "USER DEFINED TEMPLATE ALERT": {'zh_CN': u"""
     <p>您当前没有使用任何AnKindle的模板，<b>插件将自动使用默认模板</b>。</p>
     <p>关于如何制作和使用自定义用于的AnKindle的模板，请参考【帮助】文档或者【知乎】搜索AnKindle。</p>

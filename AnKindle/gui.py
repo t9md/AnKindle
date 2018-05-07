@@ -9,9 +9,9 @@ from functools import partial
 from operator import itemgetter
 
 import anki
-from anki import notes, lang
+from anki import notes
 from anki.lang import currentLang
-from aqt import QAbstractTableModel, Qt, QModelIndex, QAbstractItemView
+from aqt import QAbstractTableModel, Qt, QAbstractItemView
 from aqt import QDialog, QVBoxLayout, QFrame, \
     QPushButton, QSpacerItem, QLabel, QHBoxLayout, QSizePolicy, QGroupBox, QComboBox, QCheckBox, QTabWidget, QTableView, \
     QIcon
@@ -20,6 +20,7 @@ from aqt.importing import importFile
 from aqt.progress import ProgressManager
 from aqt.studydeck import StudyDeck
 from aqt.utils import showInfo, getFile, showText, openLink, askUser
+
 from .config import Config
 from .const import ADDON_CD, __version__, ONLINE_DOC_URL, DEFAULT_TEMPLATE
 from .db import KindleDB
@@ -178,7 +179,7 @@ class Window(QDialog):
         self.l.addWidget(frm_widgets)
         self.l.addWidget(self.grp)
         l_import = QHBoxLayout()
-        self.ck_import_new.setFixedWidth(70)
+        # self.ck_import_new.setFixedWidth(70)
         self.btn_preview_words.setFixedWidth(30)
         l_import.addWidget(self.ck_import_new)
         l_import.addWidget(self.btn_preview_words)
