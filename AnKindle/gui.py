@@ -543,7 +543,7 @@ class Window(QDialog):
             def update_note(_note):
 
                 qry_word = stem if stem else word if word else ''
-                _usage = self.adapt_to_anki(usage.replace(word, u"<b>%s</b>" % word)) if usage else None
+                _usage = self.adapt_to_anki(usage.replace(word, u"<b>%s</b>" % word)) if usage else ''
 
                 _id_in_field = re.sub("[^0-9a-zA-Z]", "", word + usage).strip().upper()
 
