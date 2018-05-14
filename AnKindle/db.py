@@ -4,12 +4,12 @@
 
 import os
 
-from .config import Config
 from anki.db import DB
 from anki.utils import isWin
 from aqt import mw
 # noinspection SqlResolve
 from aqt.utils import getFile
+from .config import Config
 from .const import DEBUG
 from .lang import _trans
 
@@ -72,17 +72,19 @@ class KindleDB(DB):
         return self.execute(
             """
             SELECT
-              ws.id,
-              ws.word,
-              ws.stem,
-              ws.lang,
-              datetime(ws.timestamp * 0.001, 'unixepoch', 'localtime') added_tm,
-              lus.usage,
-              bi.title,
-              bi.authors,
-              ws.CATEGORY
-            FROM words AS ws LEFT JOIN lookups AS lus ON ws.id = lus.word_key
-              LEFT JOIN book_info AS bi ON lus.book_key = bi.id
+  ws.id,
+  ws.word,
+  ws.stem,
+  ifnull(dict.langin,ws.lang) as lang,
+  datetime(ws.timestamp * 0.001, 'unixepoch', 'localtime') added_tm,
+  lus.usage,
+  bi.title,
+  bi.authors,
+  ws.CATEGORY
+FROM words AS ws
+  LEFT JOIN lookups AS lus ON ws.id = lus.word_key
+  left join DICT_INFO as dict on lus.dict_key = dict.id
+  LEFT JOIN book_info AS bi ON lus.book_key = bi.id
             
             {}
             
