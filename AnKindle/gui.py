@@ -587,7 +587,7 @@ class Window(QDialog):
                     )
 
         mw.moveToState("deckBrowser")
-        showInfo(_trans("CREATED AND DUPLICATES") % (total_new, total_dup), self)
+        showText(_trans("CREATED AND DUPLICATES") % (total_new, total_dup), self)
 
     def on_preview_words(self):
         self.preview_words_win.lang = self.current_mdx_lang
