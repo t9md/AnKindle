@@ -20,7 +20,6 @@ from aqt.importing import importFile
 from aqt.progress import ProgressManager
 from aqt.studydeck import StudyDeck
 from aqt.utils import showInfo, getFile, showText, openLink, askUser
-
 from .config import Config
 from .const import ADDON_CD, __version__, ONLINE_DOC_URL, DEFAULT_TEMPLATE
 from .db import KindleDB
@@ -478,7 +477,7 @@ class Window(QDialog):
     @property
     def word_data(self):
         if not self._preload_data:
-            self._preload_data = list(self.db.get_words(self.ck_import_new.isChecked()))
+            self._preload_data = list(self.db.get_vocab(self.ck_import_new.isChecked()))
         return self._preload_data
 
     @property
@@ -624,9 +623,9 @@ class WordsView(QDialog):
     @property
     def word_data(self, ):
         if self.lang:
-            new = list(self.parent().db.get_words(True))
+            new = list(self.parent().db.get_vocab(True))
 
-            all = self.parent().db.get_words(False)
+            all = self.parent().db.get_vocab(False)
 
             old = [i for i in all if i not in new]
             return list(filter(lambda l: l[3].strip().upper() == self.lang.strip().upper(),

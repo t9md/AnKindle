@@ -32,6 +32,7 @@ trans = {
     'ONLY NEW WORDS': {'zh_CN': u'仅新词', 'en': u'New Word'},
     'ONE CLICK IMPORT': {'zh_CN': u'一键导入', 'en': u'One-Click-Import'},
     'GET KINDLE DB': {'zh_CN': u'请手动选择Kindle数据库，。', 'en': u'Please select Kindle vocab database.'},
+    "GET KINDLE CLIPPINGS": {'zh_CN': u'请手动选择 My Clippings.txt，。', 'en': u'Please select Kindle clippings file.'},
     'IMPORTING': {'zh_CN': u'正在导入生词', 'en': u'Importing'},
     # 'SELECT ORIG LANG': {'zh_CN': u'选择生词语言类型:', 'en': u'Language of words:'},
     'MANDATORY': {'zh_CN': u'<b>必选：</b>', 'en': u'<b>Mandatory:</b>'},

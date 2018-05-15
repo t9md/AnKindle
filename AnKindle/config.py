@@ -26,5 +26,6 @@ class Config:
 
     last_used_lang = u""
     last_used_db_path = u""
+    last_used_clips_path = u""
 
     mdx_kindle_first_run = False
