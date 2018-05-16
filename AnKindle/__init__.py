@@ -18,14 +18,16 @@ def _try_ext_module():
             return False
         return True
     except ImportError:
-        pass
+        import AnKindlePro
+        if not AnKindlePro:
+            return False
     return False
 
 
 try:
     from . import AnKindlePro
 except ImportError:
-    AnKindlePro = None
+    import AnKindlePro
 
 
 class ActionShow(QAction):
