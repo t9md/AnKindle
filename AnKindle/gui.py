@@ -314,7 +314,6 @@ class Window(QDialog):
         edit = QPushButton(_trans("USE LATEST TEMPLATE"),
                            clicked=lambda x: importFile(mw, DEFAULT_TEMPLATE))
 
-
         ret = StudyDeck(mw, names=lambda: sorted([f['name'] for f in self.mod_list]),
                         accept=anki.lang._("Choose"), title=_trans("NOTE TYPE"),
                         parent=self, buttons=[edit], help='',
@@ -623,9 +622,9 @@ class WordsView(QDialog):
     @property
     def word_data(self, ):
         if self.lang:
-            new = list(self.parent().db.get_vocab(True))
+            new = list(self.parent().db.get_words(True))
 
-            all = self.parent().db.get_vocab(False)
+            all = self.parent().db.get_words(False)
 
             old = [i for i in all if i not in new]
             return list(filter(lambda l: l[3].strip().upper() == self.lang.strip().upper(),
