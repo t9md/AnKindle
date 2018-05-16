@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 # Created: 3/27/2018
 # Project : AnKindle
+import os
 
-from anki.collection import _Collection
+from PyQt5.QtGui import QIcon
 from aqt import QAction, QMenu
 from aqt import mw
 from aqt.importing import importFile
+
 from .const import MUST_IMPLEMENT_FIELDS, DEFAULT_TEMPLATE
 from .gui import Window
 from .lang import _trans
@@ -82,7 +84,11 @@ class AnKindleAddon:
             self.action_show_clipping_dialog.triggered.connect(self.on_show_clipping_dialog)
             self.main_menu.addAction(self.action_show_clipping_dialog)
 
-            self.action_show_clipping_dialog.setEnabled(self.ext_unlocked)
+            # self.action_show_clipping_dialog.setEnabled(self.ext_unlocked)
+            if not self.ext_unlocked:
+                self.action_show_clipping_dialog.setIcon(QIcon(
+                    os.path.join(os.path.dirname(__file__), "resource", "lock.png")
+                ))
 
     @property
     def ext_available(self):
@@ -95,7 +101,7 @@ class AnKindleAddon:
         return False
 
     def on_show_clipping_dialog(self):
-        pass
+        pass  # todo add lock
 
     def on_show_vocab_dialog(self):
         self.vocab_dlg = Window(mw, self.avl_col_model_names, self.avl_decks, )
