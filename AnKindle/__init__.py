@@ -62,7 +62,7 @@ class AnKindleAddon:
 
     def on_start(self):
         if self.ext_available and self.ext_unlocked:
-            clipping.wrap_editor()
+            clipping.start_kindle_pro()
 
     def init_menu(self):
         # init actions

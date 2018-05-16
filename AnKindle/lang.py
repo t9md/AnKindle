@@ -72,11 +72,23 @@ trans = {
     'USAGE': {'zh_CN': u'原句', 'en': u'Usage'},
     'TITLE': {'zh_CN': u'书籍', 'en': u'Title'},
     'AUTHORS': {'zh_CN': u'作者', 'en': u'Author(s)'},
-    "SHOW VOCAB IMPORT": {'zh_CN': u'生词制卡', 'en': u'Import Vocab'},
-    "SHOW CLIPPING IMPORT": {'zh_CN': u'标注制卡', 'en': u'Import Clippings'},
 
     # endregion
 
+    # region Clippings
+    "SHOW VOCAB IMPORT": {'zh_CN': u'生词制卡', 'en': u'Import Vocab'},
+    "MY CLIPPINGS NOT AVAILABLE": {'zh_CN': u'无法读取‘My Clippings.txt’。', 'en': u'“My Clippings.txt” unavailable.'},
+    "SHOW CLIPPING IMPORT": {'zh_CN': u'标注制卡', 'en': u'Import Clippings'},
+    "SELECT MY CLIPPINGS TXT": {'zh_CN': u'请手动选择 “My Clippings.txt”。',
+                                'en': u'Please select "My Clippings.txt".'},
+    "INCOMPLETE CLIPPINGS": {'zh_CN': u'待导入', 'en': u'In Queue'},
+    "COMPLETED CLIPPINGS": {'zh_CN': u'已完成', 'en': u'Completed'},
+    "CLIPPING": {'zh_CN': u'摘录', 'en': u'Clipping'},
+    "REMARK": {'zh_CN': u'笔记', 'en': u'Remark'},
+    "MARK AS": {'zh_CN': u'标记为', 'en': u'Mark as'},
+    "AUTO FILL": {'zh_CN': u'自动填充', 'en': u'Auto Fill'},
+
+    # endregion
 }
 
 
