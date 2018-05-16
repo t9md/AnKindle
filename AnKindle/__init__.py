@@ -61,7 +61,8 @@ class AnKindleAddon:
         self.init_menu()
 
     def on_start(self):
-        AnKindlePlus.start_ankindle_pro()
+        if self.ext_available:
+            AnKindlePlus.start_ankindle_pro()
 
     def init_menu(self):
         # init actions
