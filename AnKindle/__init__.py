@@ -13,24 +13,19 @@ from .lang import _trans
 
 def _try_ext_module():
     try:
-        from .Ext import clipping
+        from . import AnKindlePro
+        if not AnKindlePro:
+            return False
         return True
     except ImportError:
-        try:
-            from Ext import AnKindlePlus
-            return True
-        except:
-            pass
+        pass
     return False
 
 
 try:
-    from .Ext import clipping
+    from . import AnKindlePro
 except ImportError:
-    try:
-        from Ext import AnKindlePlus
-    except:
-        pass
+    AnKindlePro = None
 
 
 class ActionShow(QAction):
@@ -62,7 +57,7 @@ class AnKindleAddon:
 
     def on_start(self):
         if self.ext_available:
-            AnKindlePlus.start_ankindle_pro()
+            AnKindlePro.start_ankindle_pro()
 
     def init_menu(self):
         # init actions
@@ -88,7 +83,7 @@ class AnKindleAddon:
     @property
     def ext_unlocked(self):
         if self.ext_available:
-            return AnKindlePlus.Verification.Unlocked()
+            return AnKindlePro.Verification.Unlocked()
         return False
 
     def on_show_clipping_dialog(self):
