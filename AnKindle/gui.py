@@ -22,7 +22,7 @@ from aqt.studydeck import StudyDeck
 from aqt.utils import showInfo, getFile, showText, openLink, askUser
 from .config import Config
 from .const import ADDON_CD, __version__, ONLINE_DOC_URL, DEFAULT_TEMPLATE
-from .db import KindleDB
+from .db import VocabDB
 from .kkLib import IS_PY3K
 from .kkLib import WeChatButton, MoreAddonButton, VoteButton, _ImageButton, UpgradeButton, AddonUpdater, HLine, VLine
 from .lang import _trans
@@ -268,7 +268,7 @@ class Window(QDialog):
 
     def on_select_kindle_db(self, from_user_click):
         validated = False
-        self.db = KindleDB(Config.last_used_db_path, from_user_click)
+        self.db = VocabDB(Config.last_used_db_path, from_user_click)
         if not self.db.is_available:
             self.lb_db.setVisible(True)
         else:

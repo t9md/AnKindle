@@ -14,32 +14,20 @@ from .const import DEBUG
 from .lang import _trans
 
 
-class KindleDB(DB):
-    def __init__(self, fpath=None, force_select=False):
-        """
-
-        :param fpath: db or txt
-        :param force_select:
-        """
-        self._fpath = fpath
+class VocabDB(DB):
+    def __init__(self, db_path=None, force_select=False):
 
         if force_select:
             self.db = self.search_db(force_select)
         else:
-            if fpath and os.path.isfile(fpath):
-                self.db = fpath
+            if db_path and os.path.isfile(db_path):
+                self.db = db_path
             else:
                 self.db = self.search_db()
 
-        if self.is_format_db:
+        if self.db:
             Config.last_used_db_path = self.db
-            super(KindleDB, self).__init__(self.db)
-        else:
-            Config.last_used_clips_path = self.db
-
-    @property
-    def is_format_db(self):
-        return self._fpath.upper().endswith(".DB")
+            super(VocabDB, self).__init__(self.db)
 
     @property
     def is_available(self):
@@ -47,9 +35,6 @@ class KindleDB(DB):
             return os.path.isfile(self.db)
         except TypeError:
             return False
-
-    def create_clippings_db(self):
-        pass
 
     def search_db(self, force_select_db=False):
         if isWin:
@@ -66,36 +51,21 @@ class KindleDB(DB):
         if DEBUG or force_select_db:
             allDisks = []
         for disk in allDisks:
-            if self.is_format_db:
-                kindle_db = os.path.join(disk + os.path.sep + "system" + os.path.sep
-                                         + "vocabulary" + os.path.sep + "vocab.db")
-            else:
-                kindle_db = os.path.join(disk + os.path.sep + "documents" + os.path.sep
-                                         + "My Clippings.txt")
-
+            kindle_db = os.path.join(
+                disk + os.path.sep + "system" + os.path.sep + "vocabulary" + os.path.sep + "vocab.db")
             if os.path.isfile(kindle_db):
                 return kindle_db
         if force_select_db:
-            if self.is_format_db:
-                kindle_db = getFile(mw, _trans("GET KINDLE DB"),
-                                    lambda x: x, ("Kindle Vocab Db(*.db)"),
-                                    os.path.dirname(
-                                        Config.last_used_db_path if
-                                        os.path.isdir(os.path.dirname(Config.last_used_db_path)) else __file__
-                                    )
-                                    )
-            else:
-                kindle_db = getFile(mw, _trans("GET KINDLE CLIPPINGS"),
-                                    lambda x: x, ("Kindle Clippings (*.txt)"),
-                                    os.path.dirname(
-                                        Config.last_used_db_path if
-                                        os.path.isdir(os.path.dirname(Config.last_used_clips_path))
-                                        else __file__
-                                    )
-                                    )
+            kindle_db = getFile(mw, _trans("GET KINDLE DB"), lambda x: x, ("Kindle Vocab Db(*.db)"),
+                                os.path.dirname(
+                                    Config.last_used_db_path if
+                                    os.path.isdir(os.path.dirname(Config.last_used_db_path))
+                                    else __file__
+                                )
+                                )
             return kindle_db
 
-    def get_vocab(self, only_new):
+    def get_words(self, only_new):
         """
 
         :return: list of [id,word, ste, lang, added_tm,usage,title,authors]
@@ -116,9 +86,9 @@ class KindleDB(DB):
               LEFT JOIN lookups AS lus ON ws.id = lus.word_key
               left join DICT_INFO as dict on lus.dict_key = dict.id
               LEFT JOIN book_info AS bi ON lus.book_key = bi.id
-            
+
             {}
-            
+
             """.format("WHERE ws.CATEGORY = 0" if only_new else "")
         )
 

@@ -2,14 +2,35 @@
 # Created: 3/27/2018
 # Project : AnKindle
 
-from aqt import QAction
-
 from anki.collection import _Collection
+from aqt import QAction, QMenu
 from aqt import mw
 from aqt.importing import importFile
 from .const import MUST_IMPLEMENT_FIELDS, DEFAULT_TEMPLATE
 from .gui import Window
 from .lang import _trans
+
+
+def _try_ext_module():
+    try:
+        from .Ext import clipping
+        return True
+    except ImportError:
+        try:
+            from Ext import clipping
+            return True
+        except:
+            pass
+    return False
+
+
+try:
+    from .Ext import clipping
+except ImportError:
+    try:
+        from Ext import clipping
+    except:
+        pass
 
 
 class ActionShow(QAction):
@@ -21,10 +42,11 @@ class ActionShow(QAction):
 class AnKindleAddon:
 
     def __init__(self):
-
+        self.on_start()
         # variables
         self.main_menu = None
-        self.action_visible = None
+        self.action_show_vocab_dialog = None
+        self.action_show_clipping_dialog = None
         # self.main_menu_action = None
 
         if not self.avl_col_model_names:
@@ -38,16 +60,43 @@ class AnKindleAddon:
     def on_profile_loaded(self):
         self.init_menu()
 
+    def on_start(self):
+        if self.ext_available and self.ext_unlocked:
+            clipping.wrap_editor()
+
     def init_menu(self):
         # init actions
-        if not self.action_visible:
-            self.action_visible = ActionShow(mw.form.menuTools)
-            self.action_visible.triggered.connect(self.on_show_dialog)
-            mw.form.menuTools.addAction(self.action_visible)
 
-    def on_show_dialog(self):
-        self.dlg = Window(mw, self.avl_col_model_names, self.avl_decks, )
-        self.dlg.exec_()
+        if not self.main_menu:
+            self.main_menu = QMenu(_trans("AnKindle"), mw.form.menuTools, )
+            mw.form.menuTools.addMenu(self.main_menu)
+
+            self.action_show_vocab_dialog = QAction(_trans("SHOW VOCAB IMPORT"), self.main_menu)
+            self.action_show_vocab_dialog.triggered.connect(self.on_show_vocab_dialog)
+            self.main_menu.addAction(self.action_show_vocab_dialog)
+
+            self.action_show_clipping_dialog = QAction(_trans("SHOW CLIPPING IMPORT"), self.main_menu)
+            self.action_show_clipping_dialog.triggered.connect(self.on_show_clipping_dialog)
+            self.main_menu.addAction(self.action_show_clipping_dialog)
+
+            self.action_show_clipping_dialog.setEnabled(self.ext_unlocked)
+
+    @property
+    def ext_available(self):
+        return _try_ext_module()
+
+    @property
+    def ext_unlocked(self):
+        if self.ext_available:
+            return clipping.Verification.Unlocked()
+        return False
+
+    def on_show_clipping_dialog(self):
+        pass
+
+    def on_show_vocab_dialog(self):
+        self.vocab_dlg = Window(mw, self.avl_col_model_names, self.avl_decks, )
+        self.vocab_dlg.exec_()
 
     def avl_col_model_names(self):
         _ = []

@@ -72,8 +72,11 @@ trans = {
     'USAGE': {'zh_CN': u'原句', 'en': u'Usage'},
     'TITLE': {'zh_CN': u'书籍', 'en': u'Title'},
     'AUTHORS': {'zh_CN': u'作者', 'en': u'Author(s)'},
+    "SHOW VOCAB IMPORT": {'zh_CN': u'生词制卡', 'en': u'Import Vocab'},
+    "SHOW CLIPPING IMPORT": {'zh_CN': u'标注制卡', 'en': u'Import Clippings'},
 
     # endregion
+
 }
 
 
