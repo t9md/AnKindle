@@ -17,7 +17,7 @@ def _try_ext_module():
         return True
     except ImportError:
         try:
-            from Ext import clipping
+            from Ext import AnKindlePlus
             return True
         except:
             pass
@@ -28,7 +28,7 @@ try:
     from .Ext import clipping
 except ImportError:
     try:
-        from Ext import clipping
+        from Ext import AnKindlePlus
     except:
         pass
 
@@ -61,7 +61,7 @@ class AnKindleAddon:
         self.init_menu()
 
     def on_start(self):
-        clipping.start_kindle_pro()
+        AnKindlePlus.start_ankindle_pro()
 
     def init_menu(self):
         # init actions
@@ -87,7 +87,7 @@ class AnKindleAddon:
     @property
     def ext_unlocked(self):
         if self.ext_available:
-            return clipping.Verification.Unlocked()
+            return AnKindlePlus.Verification.Unlocked()
         return False
 
     def on_show_clipping_dialog(self):
