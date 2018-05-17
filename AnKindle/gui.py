@@ -472,7 +472,7 @@ class Window(QDialog):
     @property
     def word_data(self):
         if not self._preload_data:
-            self._preload_data = list(self.db.get_vocab(self.ck_import_new.isChecked()))
+            self._preload_data = list(self.db.get_words(self.ck_import_new.isChecked()))
         return self._preload_data
 
     @property
