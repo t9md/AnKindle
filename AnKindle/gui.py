@@ -100,8 +100,6 @@ class Window(QDialog):
         self.mod_list_func = mod_list_func
         self.deck_list_func = deck_list_func
 
-        self.setWindowTitle("{} - {}".format(_trans("AnKindle"), __version__))
-
         # region init controls
         self.lb_db = QLabel(_trans("CANNOT FIND KINDLE VOLUME"), self)
         self.lb_db.setVisible(False)

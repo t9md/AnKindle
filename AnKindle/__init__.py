@@ -6,7 +6,7 @@ from aqt import QAction, QMenu
 from aqt import mw
 from aqt.importing import importFile
 
-from .const import MUST_IMPLEMENT_FIELDS, DEFAULT_TEMPLATE
+from .const import MUST_IMPLEMENT_FIELDS, DEFAULT_TEMPLATE, __version__
 from .gui import Window
 from .lang import _trans
 
@@ -100,6 +100,17 @@ class AnKindleAddon:
 
     def on_show_vocab_dialog(self):
         self.vocab_dlg = Window(mw, self.avl_col_model_names, self.avl_decks, )
+
+        if self.ext_available:
+            title = "{} Plus - {}".format(_trans("AnKindle"),
+                                          __version__)
+            if AnKindlePlus.BETA_VERSION:
+                title += "(BETA{})".format(AnKindlePlus.BETA_VERSION_TEST_INDEX)
+            self.vocab_dlg.setWindowTitle(title)
+        else:
+            self.vocab_dlg.setWindowTitle("{} - {}".format(_trans("AnKindle"),
+                                                           __version__))
+
         self.vocab_dlg.exec_()
 
     def avl_col_model_names(self):
