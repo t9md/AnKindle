@@ -71,7 +71,8 @@ class AnKindleAddon:
         # init actions
 
         if not self.main_menu:
-            self.main_menu = QMenu(_trans("AnKindle"), mw.form.menuTools, )
+            self.main_menu = QMenu(_trans("AnKindle") + u" +"
+                                   if self.ext_unlocked else _trans("AnKindle"), mw.form.menuTools, )
             mw.form.menuTools.addMenu(self.main_menu)
 
             self.action_show_vocab_dialog = QAction(_trans("SHOW VOCAB IMPORT"), self.main_menu)
@@ -105,7 +106,7 @@ class AnKindleAddon:
             title = "{} Plus - {}".format(_trans("AnKindle"),
                                           __version__)
             if AnKindlePlus.BETA_VERSION:
-                title += "(BETA{})".format(AnKindlePlus.BETA_VERSION_TEST_INDEX)
+                title += " (BETA{})".format(AnKindlePlus.BETA_VERSION_TEST_INDEX)
             self.vocab_dlg.setWindowTitle(title)
         else:
             self.vocab_dlg.setWindowTitle("{} - {}".format(_trans("AnKindle"),
