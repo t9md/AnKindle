@@ -37,7 +37,7 @@ from threading import Thread
 from uuid import uuid4
 
 import aqt
-from anki.lang import _, currentLang
+from anki.lang import currentLang
 from aqt import *
 from aqt.downloader import download
 from aqt.utils import showInfo, openLink
@@ -322,7 +322,7 @@ def getWebGMT():
     conn.request("GET", "/")
     r = conn.getresponse()
     ts = r.getheader('date')
-    locale.setlocale(locale.LC_ALL, 'US')
+    locale.setlocale(locale.LC_ALL, locale.locale_alias.get('universal.utf8@ucs4'))
     return datetime.strptime(ts[:-4].strip(), "%a, %d %b %Y %H:%M:%S")
 
 

@@ -32,7 +32,12 @@ from .libs.mdict import readmdict
 
 
 class _HelpBtn(_ImageButton):
-    def __init__(self, parent, help_text_or_file):
+    def __init__(self, parent, help_text_or_file=None):
+        if not help_text_or_file:
+            if currentLang == 'zh_CN':
+                help_text_or_file = os.path.join(os.path.dirname(__file__), "resource", "help_cn.html")
+            else:
+                help_text_or_file = os.path.join(os.path.dirname(__file__), "resource", "help_en.html")
         super(_HelpBtn, self).__init__(parent, os.path.join(os.path.dirname(__file__), "resource", "help.png"))
         self.setToolTip(_trans("Help"))
         self.help_text_or_file = help_text_or_file
@@ -70,20 +75,13 @@ class _SharedFrame(QFrame):
         mr.setObjectName("mr")
         mr.setIcon(os.path.join(os.path.dirname(__file__), "resource", "more.png"))
         self.l_h_widgets.addWidget(mr)
+        self.help_btn = _HelpBtn(self)
         self.l_h_widgets.addSpacerItem(QSpacerItem(10, 10, QSizePolicy.Expanding, QSizePolicy.Minimum, ))
-        self.l_h_widgets.addWidget(_HelpBtn(self, self.help_txt))
+        self.l_h_widgets.addWidget(self.help_btn)
         if updater:
             up_btn = UpgradeButton(self, updater)
             up_btn.setIcon(os.path.join(os.path.dirname(__file__), "resource", "update.png"))
             self.l_h_widgets.addWidget(up_btn)
-
-    @property
-    def help_txt(self):
-        if currentLang == 'zh_CN':
-            loc = os.path.join(os.path.dirname(__file__), "resource", "help_cn.html")
-        else:
-            loc = os.path.join(os.path.dirname(__file__), "resource", "help_en.html")
-        return loc
 
 
 class Window(QDialog):
@@ -133,7 +131,7 @@ class Window(QDialog):
         )
 
         # region layouts
-        frm_widgets = _SharedFrame(self, self.updater)
+        self.frm_widgets = _SharedFrame(self, self.updater)
         self.updater.start()
 
         frm_lists = QFrame(self)
@@ -175,7 +173,7 @@ class Window(QDialog):
         self.ck_import_new = QCheckBox(_trans("ONLY NEW WORDS"), self, clicked=self.on_ck_import_new)
 
         self.l = QVBoxLayout(self)
-        self.l.addWidget(frm_widgets)
+        self.l.addWidget(self.frm_widgets)
         self.l.addWidget(self.grp)
         l_import = QHBoxLayout()
         # self.ck_import_new.setFixedWidth(70)

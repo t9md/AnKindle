@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 # Created: 3/27/2018
 # Project : AnKindle
-import os
 
-from PyQt5.QtGui import QIcon
 from aqt import QAction, QMenu
 from aqt import mw
 from aqt.importing import importFile
@@ -15,14 +13,14 @@ from .lang import _trans
 
 def _try_ext_module():
     try:
-        from . import AnKindlePro
-        if not AnKindlePro:
+        from . import AnKindlePlus
+        if not AnKindlePlus:
             return False
         return True
     except ImportError:
         try:
-            import AnKindlePro
-            if not AnKindlePro:
+            import AnKindlePlus
+            if not AnKindlePlus:
                 return False
         except:
             pass
@@ -30,10 +28,10 @@ def _try_ext_module():
 
 
 try:
-    from . import AnKindlePro
+    from . import AnKindlePlus
 except ImportError:
     try:
-        import AnKindlePro
+        import AnKindlePlus
     except:
         pass
 
@@ -66,8 +64,8 @@ class AnKindleAddon:
         self.init_menu()
 
     def on_start(self):
-        if self.ext_available:
-            AnKindlePro.start_ankindle_pro()
+        if self.ext_unlocked:
+            AnKindlePlus.start_AnKindle_plus()
 
     def init_menu(self):
         # init actions
@@ -84,12 +82,6 @@ class AnKindleAddon:
             self.action_show_clipping_dialog.triggered.connect(self.on_show_clipping_dialog)
             self.main_menu.addAction(self.action_show_clipping_dialog)
 
-            # self.action_show_clipping_dialog.setEnabled(self.ext_unlocked)
-            if not self.ext_unlocked:
-                self.action_show_clipping_dialog.setIcon(QIcon(
-                    os.path.join(os.path.dirname(__file__), "resource", "lock.png")
-                ))
-
     @property
     def ext_available(self):
         return _try_ext_module()
@@ -97,11 +89,14 @@ class AnKindleAddon:
     @property
     def ext_unlocked(self):
         if self.ext_available:
-            return AnKindlePro.Verification.Unlocked()
+            return AnKindlePlus.KuangKuang.Unlocked()
         return False
 
     def on_show_clipping_dialog(self):
-        pass  # todo add lock
+        if self.ext_unlocked:
+            mw.onAddCard()
+            return
+        # todo show pro introduction
 
     def on_show_vocab_dialog(self):
         self.vocab_dlg = Window(mw, self.avl_col_model_names, self.avl_decks, )
