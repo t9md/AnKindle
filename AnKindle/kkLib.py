@@ -322,7 +322,10 @@ def getWebGMT():
     conn.request("GET", "/")
     r = conn.getresponse()
     ts = r.getheader('date')
-    locale.setlocale(locale.LC_ALL, locale.locale_alias.get('universal.utf8@ucs4'))
+    try:
+        locale.setlocale(locale.LC_ALL, locale.locale_alias.get('universal.utf8@ucs4'))
+    except locale.Error:
+        locale.setlocale(locale.LC_ALL, "US")
     return datetime.strptime(ts[:-4].strip(), "%a, %d %b %Y %H:%M:%S")
 
 
