@@ -94,15 +94,12 @@ class AnKindleAddon:
         return False
 
     def on_show_clipping_dialog(self):
-        if self.ext_unlocked:
-            mw.onAddCard()
-            return
-        # todo show pro introduction
+        mw.onAddCard()
 
     def on_show_vocab_dialog(self):
         self.vocab_dlg = Window(mw, self.avl_col_model_names, self.avl_decks, )
 
-        if self.ext_available:
+        if self.ext_unlocked:
             title = "{} Plus - {}".format(_trans("AnKindle"),
                                           __version__)
             if AnKindlePlus.BETA_VERSION:

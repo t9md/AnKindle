@@ -78,7 +78,7 @@ trans = {
     # region Clippings
     "SHOW VOCAB IMPORT": {'zh_CN': u'生词导入', 'en': u'Import Vocab'},
     "MY CLIPPINGS NOT AVAILABLE": {'zh_CN': u'无法读取‘My Clippings.txt’。', 'en': u'“My Clippings.txt” unavailable.'},
-    "SHOW CLIPPING IMPORT": {'zh_CN': u'笔记导入', 'en': u'Import Clippings'},
+    "SHOW CLIPPING IMPORT": {'zh_CN': u'标注导入', 'en': u'Import Clippings'},
     "SELECT MY CLIPPINGS TXT": {'zh_CN': u'Kindle没有接入电脑或者无法定位文件\n\n请手动选择 “My Clippings.txt”。',
                                 'en': u'Kindle is not adapted to machine or file cannot be found\n\nPlease select "My Clippings.txt".'},
     "INCOMPLETE CLIPPINGS": {'zh_CN': u'待导入', 'en': u'In Queue'},
