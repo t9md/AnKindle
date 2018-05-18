@@ -85,6 +85,8 @@ trans = {
     "COMPLETED CLIPPINGS": {'zh_CN': u'已完成', 'en': u'Completed'},
     "CLIPPING": {'zh_CN': u'摘录', 'en': u'Clipping'},
     "REMARK": {'zh_CN': u'笔记', 'en': u'Remark'},
+    "BOOK": {'zh_CN': u'书名', 'en': u'Book'},
+    "AUTHOR": {'zh_CN': u'作者', 'en': u'Author'},
     "MARK AS": {'zh_CN': u'标记为', 'en': u'Mark as'},
     "AUTO FILL": {'zh_CN': u'自动填充', 'en': u'Auto Fill'},
     "ADD QUICK SET MENU": {'zh_CN': u'添加快捷菜单', 'en': u'Add Quick Menu'},
@@ -96,6 +98,7 @@ trans = {
 
     # region Config
     "CONFIGURATION": {'zh_CN': u'设置', 'en': "Configuration"},
+    "QUICK FILL TAGS": {'zh_CN': u'快捷填充标签', 'en': "Quick Filling Tags"},
 
     # endregion
 }
