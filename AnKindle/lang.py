@@ -83,7 +83,7 @@ trans = {
                                 'en': u'Kindle is not adapted to machine or file cannot be found\n\nPlease select "My Clippings.txt".'},
     "INCOMPLETE CLIPPINGS": {'zh_CN': u'待导入', 'en': u'In Queue'},
     "COMPLETED CLIPPINGS": {'zh_CN': u'已完成', 'en': u'Completed'},
-    "CLIPPING": {'zh_CN': u'摘录', 'en': u'Clipping'},
+    "CLIPPING": {'zh_CN': u'标注', 'en': u'Clipping'},
     "REMARK": {'zh_CN': u'笔记', 'en': u'Remark'},
     "BOOK": {'zh_CN': u'书名', 'en': u'Book'},
     "AUTHOR": {'zh_CN': u'作者', 'en': u'Author'},
