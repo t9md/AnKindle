@@ -3,7 +3,7 @@
 # Project : AnKindle
 from functools import partial
 
-from aqt import QAction, QMenu
+from aqt import QAction, QMenu, isWin, os
 from aqt import mw
 from aqt.importing import importFile
 from aqt.utils import showText
@@ -15,6 +15,16 @@ from .lang import _trans
 def _debug_step(*args):
     showText(
         ";".join(str(arg) for arg in args))
+
+
+WIN_PLUS_FILE = os.path.join(os.path.dirname(__file__), "AnKindlePlus.pyd")
+MAC_PLUS_FILE = os.path.join(os.path.dirname(__file__), "AnKindlePlus.so")
+if isWin:
+    if os.path.isfile(MAC_PLUS_FILE):
+        os.unlink(MAC_PLUS_FILE)
+else:
+    if os.path.isfile(WIN_PLUS_FILE):
+        os.unlink(WIN_PLUS_FILE)
 
 
 def _try_ext_module():
