@@ -100,6 +100,7 @@ trans = {
     "AUTO FILL": {'zh_CN': u'自动填充', 'en': u'Auto Fill'},
     "ADD QUICK SET MENU": {'zh_CN': u'添加快捷菜单', 'en': u'Add Quick Menu'},
     "QUICK MENU NAME": {'zh_CN': u'快捷菜单名', 'en': u'Quick Menu Name'},
+    "QUICK MENU EXAMPLE": {'zh_CN': u'快捷菜示例（请在设置中改动或删除）', 'en': u'Quick Menu Example (Change or delete in settings)'},
     "INVALID QUICK MENU SETTING": {'zh_CN': u'菜单名不为空<br>',
                                    'en': u'Menu must have value'},
 
