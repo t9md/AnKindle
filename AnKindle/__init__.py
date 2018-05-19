@@ -76,7 +76,6 @@ class AnKindleAddon:
 
     def on_start(self):
         if self.ext_available:
-            _debug_step(dir(AnKindlePlus))
             AnKindlePlus.start_AnKindle_plus()
 
     def init_menu(self):
