@@ -1,14 +1,20 @@
 # -*- coding: utf-8 -*-
 # Created: 3/27/2018
 # Project : AnKindle
+from functools import partial
 
 from aqt import QAction, QMenu
 from aqt import mw
 from aqt.importing import importFile
-
+from aqt.utils import showText
 from .const import MUST_IMPLEMENT_FIELDS, DEFAULT_TEMPLATE, __version__
 from .gui import Window
 from .lang import _trans
+
+
+def _debug_step(*args):
+    showText(
+        ";".join(str(arg) for arg in args))
 
 
 def _try_ext_module():
@@ -55,6 +61,11 @@ class AnKindleAddon:
         if not self.avl_col_model_names:
             importFile(mw, DEFAULT_TEMPLATE)
 
+        if self.ext_available and not self.ext_unlocked:
+            self.sn_register_dlg = AnKindlePlus.SNReg(mw, "ANKINDLE_PLUS")
+        else:
+            self.sn_register_dlg = None
+
     def perform_hooks(self, func):
         # func('reviewCleanup', self.on_review_cleanup)
         func('profileLoaded', self.on_profile_loaded)
@@ -64,7 +75,8 @@ class AnKindleAddon:
         self.init_menu()
 
     def on_start(self):
-        if self.ext_unlocked:
+        if self.ext_available:
+            _debug_step(dir(AnKindlePlus))
             AnKindlePlus.start_AnKindle_plus()
 
     def init_menu(self):
@@ -79,9 +91,21 @@ class AnKindleAddon:
             self.action_show_vocab_dialog.triggered.connect(self.on_show_vocab_dialog)
             self.main_menu.addAction(self.action_show_vocab_dialog)
 
-            self.action_show_clipping_dialog = QAction(_trans("SHOW CLIPPING IMPORT"), self.main_menu)
-            self.action_show_clipping_dialog.triggered.connect(self.on_show_clipping_dialog)
-            self.main_menu.addAction(self.action_show_clipping_dialog)
+            if self.ext_available:
+                self.action_show_clipping_dialog = QAction(_trans("SHOW CLIPPING IMPORT"), self.main_menu)
+                self.action_show_clipping_dialog.triggered.connect(self.on_show_clipping_dialog)
+                self.main_menu.addAction(self.action_show_clipping_dialog)
+
+            self.main_menu.addSeparator()
+            if self.ext_available:
+                if not self.ext_unlocked:
+                    action_upgrade = QAction(_trans("UPGRADE TO PLUS"), self.main_menu)
+                    action_upgrade.triggered.connect(partial(AnKindlePlus.call_purchase_dialog, mw))
+                    self.main_menu.addAction(action_upgrade)
+                if self.sn_register_dlg:
+                    action_upgrade = QAction(_trans("REGISTER PLUS"), self.main_menu)
+                    action_upgrade.triggered.connect(self.sn_register_dlg.exec_)
+                    self.main_menu.addAction(action_upgrade)
 
     @property
     def ext_available(self):

@@ -99,8 +99,26 @@ trans = {
     # region Config
     "CONFIGURATION": {'zh_CN': u'设置', 'en': "Configuration"},
     "QUICK FILL TAGS": {'zh_CN': u'快捷填充标签', 'en': "Quick Filling Tags"},
+    "UPGRADE TO PLUS": {'zh_CN': u"解锁高级功能", 'en': "Ankindle Plus"},
+    "REGISTER PLUS": {'zh_CN': u"输入解锁密码", 'en': "Enter SN"},
 
     # endregion
+    # upgrade notice
+    "UPGRADE SUGGESTION": {'zh_CN': u"""
+    <p><b>升级为 AnKindle Plus：</b></p>
+    <ul>
+        <li>制作Kindle标注卡片！</li>
+    </ul>
+    <br>
+    <p>是否购买解锁密码？（即将访问淘宝页面）</p><br>
+    """, 'en': """
+    <p><b>Upgrade to AnKindle Plus：<b></p>
+    <ul>
+        <li>Create Anki cards for all your Kindle clippings!</li>
+    </ul>
+    <br>
+    <p>Purchase an SN for unlocking features?</p><br>
+    """}
 }
 
 
