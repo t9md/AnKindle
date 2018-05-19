@@ -74,7 +74,14 @@ trans = {
     'AUTHORS': {'zh_CN': u'作者', 'en': u'Author(s)'},
 
     # endregion
-
+    "WIN UPDATE": {'zh_CN': u'请按照以下步骤更新AnKindle：\n\n1. 菜单 - 工具 - 打开插件文件夹。\n'
+                            u'2. 退出Anki。\n'
+                            u'3. 删掉AnKindle文件夹和anKindle.py。\n'
+                            u'4. 用代码重装AnKindle。',
+                   'en': u'Please follow below steps to upgrade AnKindle：\n\n1. Menu - Tools - Open Add-on Folder.\n'
+                         u'2. Exit Anki.\n'
+                         u'3. delete "AnKindle" folder and "anKindle.py" file.\n'
+                         u'4. Re-Install AnKindle via the code.'},
     # region Clippings
     "SHOW VOCAB IMPORT": {'zh_CN': u'生词导入', 'en': u'Import Vocab'},
     "MY CLIPPINGS NOT AVAILABLE": {'zh_CN': u'无法读取‘My Clippings.txt’。', 'en': u'“My Clippings.txt” unavailable.'},

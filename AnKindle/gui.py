@@ -11,7 +11,7 @@ from operator import itemgetter
 import anki
 from anki import notes
 from anki.lang import currentLang
-from aqt import QAbstractTableModel, Qt, QAbstractItemView
+from aqt import QAbstractTableModel, Qt, QAbstractItemView, isWin
 from aqt import QDialog, QVBoxLayout, QFrame, \
     QPushButton, QSpacerItem, QLabel, QHBoxLayout, QSizePolicy, QGroupBox, QComboBox, QCheckBox, QTabWidget, QTableView, \
     QIcon
@@ -82,6 +82,9 @@ class _SharedFrame(QFrame):
             up_btn = UpgradeButton(self, updater)
             up_btn.setIcon(os.path.join(os.path.dirname(__file__), "resource", "update.png"))
             self.l_h_widgets.addWidget(up_btn)
+            if isWin:
+                up_btn.disconnect()
+                up_btn.clicked.connect(lambda: showInfo(_trans("WIN UPDATE"), parent, ))
 
 
 class Window(QDialog):
