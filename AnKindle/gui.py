@@ -83,8 +83,8 @@ class _SharedFrame(QFrame):
             up_btn.setIcon(os.path.join(os.path.dirname(__file__), "resource", "update.png"))
             self.l_h_widgets.addWidget(up_btn)
             if isWin:
-                up_btn.disconnect()
-                up_btn.clicked.connect(lambda: showInfo(_trans("WIN UPDATE"), parent, ))
+                up_btn.clicked.disconnect()
+                up_btn.clicked.connect(lambda: showText(_trans("WIN UPDATE") % ADDON_CD, parent, title=_trans("ANKINDLE")))
 
 
 class Window(QDialog):

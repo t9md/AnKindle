@@ -97,12 +97,14 @@ class AnKindleAddon:
             mw.form.menuTools.addMenu(self.main_menu)
 
             self.action_show_vocab_dialog = QAction(_trans("SHOW VOCAB IMPORT"), self.main_menu)
+            self.action_show_vocab_dialog.setShortcut("CTRL+K")
             self.action_show_vocab_dialog.triggered.connect(self.on_show_vocab_dialog)
             self.main_menu.addAction(self.action_show_vocab_dialog)
 
             if self.ext_available:
                 self.action_show_clipping_dialog = QAction(_trans("SHOW CLIPPING IMPORT"), self.main_menu)
                 self.action_show_clipping_dialog.triggered.connect(self.on_show_clipping_dialog)
+                self.action_show_vocab_dialog.setShortcut("CTRL+L")
                 self.main_menu.addAction(self.action_show_clipping_dialog)
 
             self.main_menu.addSeparator()
