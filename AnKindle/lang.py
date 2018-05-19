@@ -91,8 +91,8 @@ trans = {
     "AUTO FILL": {'zh_CN': u'自动填充', 'en': u'Auto Fill'},
     "ADD QUICK SET MENU": {'zh_CN': u'添加快捷菜单', 'en': u'Add Quick Menu'},
     "QUICK MENU NAME": {'zh_CN': u'快捷菜单名', 'en': u'Quick Menu Name'},
-    "INVALID QUICK MENU SETTING": {'zh_CN': u'1. 菜单名不为空<br>2. 标注和笔记的模板目标字段不能相同',
-                                   'en': u'1. Menu must have value<br>2. Clpping and Remark fields cannot be set to same fields.'},
+    "INVALID QUICK MENU SETTING": {'zh_CN': u'菜单名不为空<br>',
+                                   'en': u'Menu must have value'},
 
     # endregion
 
