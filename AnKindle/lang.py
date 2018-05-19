@@ -105,19 +105,19 @@ trans = {
     # endregion
     # upgrade notice
     "UPGRADE SUGGESTION": {'zh_CN': u"""
-    <p><b>升级为 AnKindle Plus：</b></p>
-    <ul>
-        <li>制作Kindle标注卡片！</li>
-    </ul>
-    <br>
-    <p>是否购买解锁密码？（即将访问淘宝页面）</p><br>
+    <p>AnKindle Plus：</p>
+    <p>- 为您的所有Kindle标注制作Anki读书卡片！（点击菜单中“标注导入”进行试用）</p><br>
+    <p>是否前往商店购买解锁密码？（即将访问淘宝页面）</p><br>
     """, 'en': """
-    <p><b>Upgrade to AnKindle Plus：<b></p>
-    <ul>
-        <li>Create Anki cards for all your Kindle clippings!</li>
-    </ul>
-    <br>
+    <p><b>AnKindle Plus：<b></p>
+    <p>Create Anki cards for all your Kindle clippings!</p>
     <p>Purchase an SN for unlocking features?</p><br>
+    """},
+
+    "UPGRADE SUGGESTION MORE CLIPPINGS": {'zh_CN': u"""
+    <p>基础版只支持10条标注的制作，是否升级为 AnKindle Plus 解锁？</p><br>
+    """, 'en': """
+    <p>Basic edition support only 10 clippings, upgrade to AnKindle Plus?</p>
     """}
 }
 
