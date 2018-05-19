@@ -103,7 +103,7 @@ class AnKindleAddon:
                     self.main_menu.addAction(action_upgrade)
                 if self.sn_register_dlg:
                     action_upgrade = QAction(_trans("REGISTER PLUS"), self.main_menu)
-                    action_upgrade.triggered.connect(self.sn_register_dlg.exec_)
+                    AnKindlePlus._bind_qt_slots(action_upgrade.triggered, self.on_show_enter_sn_dialog)
                     self.main_menu.addAction(action_upgrade)
 
     @property
@@ -115,6 +115,9 @@ class AnKindleAddon:
         if self.ext_available:
             return AnKindlePlus.KuangKuang.Unlocked()
         return False
+
+    def on_show_enter_sn_dialog(self, *args):
+        self.sn_register_dlg.exec_()
 
     def on_show_clipping_dialog(self):
         mw.onAddCard()
