@@ -100,6 +100,8 @@ trans = {
     "MARK AS": {'zh_CN': u'标记为', 'en': u'Mark as'},
     "AUTO FILL": {'zh_CN': u'自动填充', 'en': u'Auto Fill'},
     "ADD QUICK SET MENU": {'zh_CN': u'添加快捷菜单', 'en': u'Add Quick Menu'},
+    "AUTO SAVE CARD": {'zh_CN': u'自动添加卡片', 'en': u'Auto-Add Card'},
+    "AUTO COMPLETE CLIPPING": {'zh_CN': u'添加卡片后自动标记“已完成”', 'en': u'Mark as "Completed" after saving'},
     "QUICK MENU NAME": {'zh_CN': u'快捷菜单名', 'en': u'Quick Menu Name'},
     "QUICK MENU EXAMPLE": {'zh_CN': u'快捷菜单示例（请在设置中改动或删除）', 'en': u'Quick Menu Example (Change or delete in settings)'},
     "INVALID QUICK MENU SETTING": {'zh_CN': u'菜单名不为空<br>',
