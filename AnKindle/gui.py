@@ -356,7 +356,8 @@ class Window(QDialog):
 
         if self.mdx and os.path.isfile(self.mdx):
             self.btn_3select_mdx.setText(
-                u'%s [%s]' % (_trans("MDX TYPE"), os.path.splitext(os.path.basename(self.mdx))[0]))
+                u'%s [%s]' % (_trans("MDX TYPE"),
+                              six.ensure_text(os.path.splitext(os.path.basename(self.mdx))[0])))
             self.builder = mdict_query.IndexBuilder(self.mdx)
             self.set_lang_config(mdx_path=six.ensure_str(self.mdx) if self.mdx else u'')
         else:
