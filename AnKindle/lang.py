@@ -114,6 +114,7 @@ trans = {
     "QUICK FILL TAGS": {'zh_CN': u'快捷填充标签', 'en': "Quick Filling Tags"},
     "UPGRADE TO PLUS": {'zh_CN': u"解锁高级功能", 'en': "Ankindle Plus"},
     "REGISTER PLUS": {'zh_CN': u"输入激活码", 'en': "Enter SN"},
+    "PREVIEW": {'zh_CN': u"---- 预览 ----", 'en': "---- Preview ----"},
 
     # endregion
     # upgrade notice
