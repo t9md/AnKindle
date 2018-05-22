@@ -113,14 +113,14 @@ trans = {
     "CONFIGURATION": {'zh_CN': u'设置', 'en': "Configuration"},
     "QUICK FILL TAGS": {'zh_CN': u'快捷填充标签', 'en': "Quick Filling Tags"},
     "UPGRADE TO PLUS": {'zh_CN': u"解锁高级功能", 'en': "Ankindle Plus"},
-    "REGISTER PLUS": {'zh_CN': u"输入解锁密码", 'en': "Enter SN"},
+    "REGISTER PLUS": {'zh_CN': u"输入激活码", 'en': "Enter SN"},
 
     # endregion
     # upgrade notice
     "UPGRADE SUGGESTION": {'zh_CN': u"""
     <p>AnKindle Plus：</p>
     <p>- 为您的所有Kindle标注制作Anki读书卡片！（点击菜单中“标注导入”进行试用）</p><br>
-    <p>是否前往商店购买解锁密码？（即将访问淘宝页面）</p><br>
+    <p>是否前往商店购买激活码？（即将访问淘宝页面）</p><br>
     """, 'en': """
     <p><b>AnKindle Plus：<b></p>
     <p>Create Anki cards for all your Kindle clippings!</p>
