@@ -75,10 +75,10 @@ trans = {
 
     # endregion
     "WIN UPDATE": {'zh_CN': u'新版本AnKindle可用，请按照以下步骤更新AnKindle：\n\n'
-                            u'1. 菜单 - 工具 - 打开插件文件夹。\n'
-                            u'2. 退出Anki。\n'
-                            u'3. 删掉AnKindle文件夹和anKindle.py。\n'
-                            u'4. 使用 %s 代码重装AnKindle。',
+                            u'1. 菜单 - 工具 - 打开插件文件夹\n'
+                            u'2. 退出Anki\n'
+                            u'3. 删掉AnKindle文件夹和anKindle.py\n'
+                            u'4. 使用 %s 代码重装AnKindle',
                    'en': u'New version is availabel now, please follow below steps to upgrade AnKindle：\n\n'
                          u'1. Menu - Tools - Open Add-on Folder.\n'
                          u'2. Exit Anki.\n'
