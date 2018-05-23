@@ -359,7 +359,7 @@ class Window(QDialog):
                 u'%s [%s]' % (_trans("MDX TYPE"),
                               six.ensure_text(os.path.splitext(os.path.basename(self.mdx))[0])))
             self.builder = mdict_query.IndexBuilder(self.mdx)
-            self.set_lang_config(mdx_path=six.ensure_str(self.mdx) if self.mdx else u'')
+            self.set_lang_config(mdx_path=six.ensure_text(self.mdx) if self.mdx else u'')
         else:
             self.btn_3select_mdx.setText(_trans("SELECT MDX"))
             self.builder = None
@@ -371,7 +371,7 @@ class Window(QDialog):
             return html
 
         self.builder.check_build()
-        result = self.builder.mdx_lookup(word)  # self.word: six.ensure_str
+        result = self.builder.mdx_lookup(word)  # self.word: six.ensure_text
         if result:
             if result[0].upper().find(u"@@@LINK=") > -1:
                 # redirect to a new word behind the equal symol.

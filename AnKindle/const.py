@@ -5,15 +5,15 @@ import os
 
 from .libs import six
 
-__version__ = "0.6.22"
+__version__ = "0.6.23"
 HAS_SET_UP = False
 ADDON_CD = 1016931132
 DEBUG = False
 ONLINE_DOC_URL = "https://github.com/upday7/AnKindle/blob/master/docs/DOC.md"
-DEFAULT_TEMPLATE = six.ensure_str(os.path.join(os.path.dirname(__file__), u"resource", u"AnKindle.apkg"))
+DEFAULT_TEMPLATE = six.ensure_text(os.path.join(os.path.dirname(__file__), u"resource", u"AnKindle.apkg"))
 CLIPPINGS_DEFAULT_TEMPLATE_NAME = u"AnKindleClipping-Default"
-CLIPPINGS_DEFUALT_TEMPLATE = six.ensure_str(os.path.join(os.path.dirname(__file__), u"resource",
-                                                         CLIPPINGS_DEFAULT_TEMPLATE_NAME + ".apkg"))
+CLIPPINGS_DEFUALT_TEMPLATE = six.ensure_text(os.path.join(os.path.dirname(__file__), u"resource",
+                                                          CLIPPINGS_DEFAULT_TEMPLATE_NAME + ".apkg"))
 CLIPPING_DEFAULT_MODULE_NAMES = ["AnKindleClipping-Basic", "AnKindleClipping-Cloze"]
 SQL_SELECT_WORDS = """
 SELECT
