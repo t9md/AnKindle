@@ -543,7 +543,9 @@ class Window(QDialog):
                 qry_word = stem if stem else word if word else ''
                 _usage = self.adapt_to_anki(usage.replace(word, u"<b>%s</b>" % word)) if usage else ''
 
-                _id_in_field = re.sub("[^0-9a-zA-Z]", "", word + usage).strip().upper()
+                _id_in_field = re.sub("[^0-9a-zA-Z]", "", qry_word + usage).strip().upper()
+                if not _id_in_field:
+                    return
 
                 _note.fields[_note._fieldOrd('id')] = _id_in_field if _id_in_field else ''
                 _note.fields[_note._fieldOrd('word')] = word if word else ''
@@ -559,15 +561,16 @@ class Window(QDialog):
                     _note.fields[_note._fieldOrd('mdx_name')] = dict_nm
                 except KeyError:
                     pass
+                return True
 
-            update_note(note)
-            if note.dupeOrEmpty() != 2:
-                mw.col.addNote(note)
-                total_new += 1
-            else:
-                total_dup += 1
-            mw.col.autosave()
-            # endregion
+            if update_note(note):
+                if note.dupeOrEmpty() != 2:
+                    mw.col.addNote(note)
+                    total_new += 1
+                else:
+                    total_dup += 1
+                mw.col.autosave()
+                # endregion
 
         # copy css files
         if self.mdx:
