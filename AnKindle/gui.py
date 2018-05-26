@@ -543,9 +543,10 @@ class Window(QDialog):
                 qry_word = stem if stem else word if word else ''
                 _usage = self.adapt_to_anki(usage.replace(word, u"<b>%s</b>" % word)) if usage else ''
 
-                _id_in_field = re.sub("[^0-9a-zA-Z]", "", qry_word + usage).strip().upper()
-                if not _id_in_field:
-                    return
+                try:
+                    _id_in_field = re.sub("[^0-9a-zA-Z]", "", qry_word + usage).strip().upper()
+                except TypeError:
+                    return False
 
                 _note.fields[_note._fieldOrd('id')] = _id_in_field if _id_in_field else ''
                 _note.fields[_note._fieldOrd('word')] = word if word else ''
