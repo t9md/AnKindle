@@ -93,6 +93,7 @@ trans = {
     "INCOMPLETE CLIPPINGS": {'zh_CN': u'待导入', 'en': u'In Queue'},
     "COMPLETED CLIPPINGS": {'zh_CN': u'已完成', 'en': u'Completed'},
     "CLOZE": {'zh_CN': u'填空', 'en': u'Cloze'},
+    "BATCH": {'zh_CN': u'(批量)', 'en': u'(Batch)'},
     "CLIPPING": {'zh_CN': u'标注', 'en': u'Clipping'},
     "REMARK": {'zh_CN': u'笔记', 'en': u'Remark'},
     "BOOK": {'zh_CN': u'书名', 'en': u'Book'},
@@ -106,9 +107,10 @@ trans = {
     "AUTO COMPLETE CLIPPING": {'zh_CN': u'添加卡片后自动标记“已完成”', 'en': u'Mark as "Completed" after saving'},
     "QUICK MENU NAME": {'zh_CN': u'快捷菜单名', 'en': u'Quick Menu Name'},
     "QUICK MENU EXAMPLE": {'zh_CN': u'快捷菜单示例（请在设置中改动或删除）', 'en': u'Quick Menu Example (Change or delete in settings)'},
-    "INVALID QUICK MENU SETTING": {'zh_CN': u'菜单名不为空<br>',
-                                   'en': u'Menu must have value'},
-
+    "INVALID QUICK MENU SETTING": {'zh_CN': u'菜单名不为空<br>', 'en': u'Menu must have value'},
+    "BATCH NOTE ADDED ALERT": {'zh_CN': u'成功批量添加 %s 笔记到 "%s" 记忆库.', 'en': u'%s note(s) have been added to deck "%s".'},
+    "BATCH NOTE ADDING ALERT": {'zh_CN': u'正在批量添加 %s 条笔记到 "%s" 记忆库，是否继续？',
+                                'en': u'Adding %s note(s) to deck "%s", proceed?'},
     # endregion
 
     # region Config
