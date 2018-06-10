@@ -84,7 +84,8 @@ class _SharedFrame(QFrame):
             self.l_h_widgets.addWidget(up_btn)
             if isWin:
                 up_btn.clicked.disconnect()
-                up_btn.clicked.connect(lambda: showText(_trans("WIN UPDATE") % ADDON_CD, parent, title=_trans("ANKINDLE")))
+                up_btn.clicked.connect(
+                    lambda: showText(_trans("WIN UPDATE") % ADDON_CD, parent, title=_trans("ANKINDLE")))
 
 
 class Window(QDialog):
@@ -262,6 +263,20 @@ class Window(QDialog):
     def deck_list(self):
         return self.deck_list_func()
 
+    @property
+    def MDXFiles(self):
+        from . import _try_ext_module
+        if _try_ext_module():
+            from AnKindlePlus import GetMDXConfig
+            return GetMDXConfig(self.current_mdx_lang)
+        return ['', '', '', '', '', ]
+
+    @property
+    def MDXFilesFirstFile(self):
+        for mdx_file in self.MDXFiles:
+            if os.path.isfile(mdx_file):
+                return mdx_file
+
     def on_ck_import_new(self, ):
         self.set_lang_config(import_new=self.ck_import_new.isChecked())
 
@@ -344,7 +359,23 @@ class Window(QDialog):
         self._validate_clicks()
 
     def on_select_mdx(self, file_path, ignore_selection=False):
-        self.mdx = None
+        from . import _try_ext_module
+        if _try_ext_module():
+            if not ignore_selection:
+                from AnKindlePlus import MDXDialog, GetMDXConfig
+                dlg = MDXDialog(self, self.current_mdx_lang)
+                dlg.exec_()
+            mdx = self.MDXFilesFirstFile
+            if mdx:
+                self.btn_3select_mdx.setText(
+                    u'[ %s ]' % (six.ensure_text(os.path.splitext(os.path.basename(mdx))[0])))
+            else:
+                self.btn_3select_mdx.setText(_trans("SELECT MDX"))
+        else:
+            self.on_select_mdx_legacy(file_path, ignore_selection)
+
+    def on_select_mdx_legacy(self, file_path, ignore_selection=False):
+        self.mdx = ''
         if file_path and os.path.isfile(file_path):
             self.mdx = file_path
         else:
@@ -358,25 +389,20 @@ class Window(QDialog):
             self.btn_3select_mdx.setText(
                 u'%s [%s]' % (_trans("MDX TYPE"),
                               six.ensure_text(os.path.splitext(os.path.basename(self.mdx))[0])))
-            self.builder = mdict_query.IndexBuilder(self.mdx)
             self.set_lang_config(mdx_path=six.ensure_text(self.mdx) if self.mdx else u'')
         else:
             self.btn_3select_mdx.setText(_trans("SELECT MDX"))
-            self.builder = None
 
-    def get_html(self, word):
+    def get_html(self, word, builder):
         html = ''
-
-        if not self.builder:
+        if not builder:
             return html
-
-        self.builder.check_build()
-        result = self.builder.mdx_lookup(word)  # self.word: six.ensure_text
+        result = builder.mdx_lookup(word)  # self.word: six.ensure_text
         if result:
             if result[0].upper().find(u"@@@LINK=") > -1:
                 # redirect to a new word behind the equal symol.
                 word = result[0][len(u"@@@LINK="):].strip()
-                return self.get_html(word)
+                return self.get_html(word, builder)
             else:
                 html = self.adapt_to_anki(result[0])
         return html
@@ -507,25 +533,7 @@ class Window(QDialog):
         progress.finish()
 
     def on_import(self):
-        dict_nm = ''
-        if self.builder:
-            try:
-                mdx_dict = readmdict.MDX(self.mdx, only_header=True)
-                self.builder._encoding = mdx_dict._encoding
-            except MemoryError:
-                showInfo(_trans("MDX MEMORY ERROR"), self, type="warning", title=_trans("ANKINDLE"))
-                return
-            except TypeError:
-                showInfo(_trans("MDX TYPE ERROR"), self, type="warning", title=_trans("ANKINDLE"))
-                return
-            dict_nm = os.path.splitext(os.path.basename(mdx_dict._fname))[0]
-
-        else:
-            ret = askUser(
-                _trans("ALERT FOR MISSING MDX"), self, defaultno=False, title=_trans("ANKINDLE")
-            )
-            if not ret:
-                return
+        from . import _try_ext_module
 
         total_new = 0
         total_dup = 0
@@ -538,16 +546,61 @@ class Window(QDialog):
                 continue
             note.model()['did'] = self.deck['id']
 
-            def update_note(_note):
+            qry_word = stem if stem else word if word else ''
 
-                qry_word = stem if stem else word if word else ''
-                _usage = self.adapt_to_anki(usage.replace(word, u"<b>%s</b>" % word)) if usage else ''
-
+            if _try_ext_module():
+                mdx_files = self.MDXFiles
+            else:
+                mdx_files = [self.mdx, ]
+            mdx_files = [m for m in mdx_files if os.path.isfile(m)]
+            if not any(mdx_files):
+                ret = askUser(
+                    _trans("ALERT FOR MISSING MDX"), self, defaultno=False, title=_trans("ANKINDLE")
+                )
+                if not ret:
+                    break
+            dict_nm = ''
+            dict_data = ''
+            for mdx_file in mdx_files:
+                self.builder = mdict_query.IndexBuilder(mdx_file)
+                self.builder.get_header()
+                self.builder.check_build()
                 try:
-                    _id_in_field = re.sub("[^0-9a-zA-Z]", "", qry_word + usage).strip().upper()
+                    mdx_dict = readmdict.MDX(mdx_file, only_header=True)
+                    self.builder._encoding = mdx_dict._encoding
+                except MemoryError:
+                    showInfo(_trans("MDX MEMORY ERROR"), self, type="warning", title=_trans("ANKINDLE"))
+                    continue
                 except TypeError:
-                    return False
+                    showInfo(_trans("MDX TYPE ERROR"), self, type="warning", title=_trans("ANKINDLE"))
+                    continue
+                dict_nm = os.path.splitext(os.path.basename(mdx_dict._fname))[0]
 
+                self.missed_css = set()
+                dict_data = self.get_html(qry_word, self.builder)
+                # copy css files
+                if dict_data:
+                    mdx_dict_dir = os.path.split(mdx_file)[0]
+                    include_mdx_extras = ['.CSS', '.JS']
+                    for root, dirs, files in os.walk(mdx_dict_dir):
+                        for _mfile in [css for css in files if os.path.splitext(css)
+                                                               [1].strip().upper() in include_mdx_extras]:
+                            _nfile = _mfile
+                            if _mfile in self.missed_css:
+                                _nfile = "_" + _mfile
+                            shutil.copy(
+                                os.path.join(root, _mfile),
+                                _nfile
+                            )
+                    break
+
+            _usage = self.adapt_to_anki(usage.replace(word, u"<b>%s</b>" % word)) if usage else ''
+            try:
+                _id_in_field = re.sub("[^0-9a-zA-Z]", "", qry_word + usage).strip().upper()
+            except TypeError:
+                return False
+
+            def update_note(_note):
                 _note.fields[_note._fieldOrd('id')] = _id_in_field if _id_in_field else ''
                 _note.fields[_note._fieldOrd('word')] = word if word else ''
                 _note.fields[_note._fieldOrd('stem')] = stem if stem else ''
@@ -556,7 +609,7 @@ class Window(QDialog):
                 _note.fields[_note._fieldOrd('usage')] = _usage if _usage else ''
                 _note.fields[_note._fieldOrd('title')] = title if title else ''
                 _note.fields[_note._fieldOrd('authors')] = authors if authors else ''
-                _note.fields[_note._fieldOrd('mdx_dict')] = self.get_html(qry_word)
+                _note.fields[_note._fieldOrd('mdx_dict')] = dict_data
 
                 try:
                     _note.fields[_note._fieldOrd('mdx_name')] = dict_nm
@@ -572,21 +625,6 @@ class Window(QDialog):
                     total_dup += 1
                 mw.col.autosave()
                 # endregion
-
-        # copy css files
-        if self.mdx:
-            mdx_dict_dir = os.path.split(self.mdx)[0]
-            include_mdx_extras = ['.CSS', '.JS']
-            for root, dirs, files in os.walk(mdx_dict_dir):
-                for _mfile in [css for css in files if os.path.splitext(css)
-                                                       [1].strip().upper() in include_mdx_extras]:
-                    _nfile = _mfile
-                    if _mfile in self.missed_css:
-                        _nfile = "_" + _mfile
-                    shutil.copy(
-                        os.path.join(root, _mfile),
-                        _nfile
-                    )
 
         mw.moveToState("deckBrowser")
         showText(_trans("CREATED AND DUPLICATES") % (total_new, total_dup), self)

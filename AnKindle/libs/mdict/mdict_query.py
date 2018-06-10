@@ -82,6 +82,7 @@ class IndexBuilder(object):
             self._make_mdd_index()
 
     def check_build(self):
+        self.get_header()
         # check if the mdx.db and mdd.db file is available
         if self.header_build_flag or not os.path.isfile(self._mdx_db):
             self._make_mdx_index()
@@ -96,6 +97,8 @@ class IndexBuilder(object):
                 'stylesheet': self._stylesheet}
 
     def _replace_stylesheet(self, txt):
+        if isinstance(txt,bytes):
+            txt  = txt.decode("utf-8")
         # substitute stylesheet definition
         txt_list = re.split('`\d+`', txt)
         txt_tag = re.findall('`\d+`', txt)
@@ -104,11 +107,11 @@ class IndexBuilder(object):
             style = self._stylesheet[txt_tag[j][1:-1]]
             if p and p[-1] == '\n':
                 txt_styled = txt_styled + \
-                    style[0].encode('utf-8') + p.rstrip() + \
-                    style[1].encode('utf-8') + '\r\n'
+                    style[0].encode('utf-8').decode("utf-8") + p.rstrip() + \
+                    style[1].encode('utf-8').decode("utf-8") + '\r\n'
             else:
                 txt_styled = txt_styled + \
-                    style[0].encode('utf-8') + p + style[1].encode('utf-8')
+                    style[0].encode('utf-8').decode("utf-8") + p + style[1].encode('utf-8').decode("utf-8")
         return txt_styled
 
     def _make_mdx_index(self):
@@ -247,7 +250,7 @@ class IndexBuilder(object):
             u'\x00').encode('utf-8')
         if self._stylesheet:
             record = self._replace_stylesheet(record)
-        record = record.decode('utf-8')
+        record = record.decode('utf-8') if isinstance(record,bytes) else record
         return record
 
     def get_mdd_by_index(self, fmdx, index):

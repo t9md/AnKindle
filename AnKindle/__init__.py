@@ -3,7 +3,7 @@
 # Project : AnKindle
 from functools import partial
 
-from aqt import QAction, QMenu, isWin, os
+from aqt import QAction, QMenu, isWin, os, QKeySequence
 from aqt import mw
 from aqt.importing import importFile
 from aqt.utils import showText
@@ -97,8 +97,8 @@ class AnKindleAddon:
             mw.form.menuTools.addMenu(self.main_menu)
 
             self.action_show_vocab_dialog = QAction(_trans("SHOW VOCAB IMPORT"), self.main_menu)
-            self.action_show_vocab_dialog.setShortcut("CTRL+K")
             self.action_show_vocab_dialog.triggered.connect(self.on_show_vocab_dialog)
+            self.action_show_vocab_dialog.setShortcut("CTRL+K")
             self.main_menu.addAction(self.action_show_vocab_dialog)
 
             if self.ext_available:
@@ -136,7 +136,6 @@ class AnKindleAddon:
 
     def on_show_vocab_dialog(self):
         self.vocab_dlg = Window(mw, self.avl_col_model_names, self.avl_decks, )
-
         if self.ext_unlocked:
             title = "{} Plus - {}".format(_trans("AnKindle"),
                                           __version__)
@@ -146,7 +145,6 @@ class AnKindleAddon:
         else:
             self.vocab_dlg.setWindowTitle("{} - {}".format(_trans("AnKindle"),
                                                            __version__))
-
         self.vocab_dlg.exec_()
 
     def avl_col_model_names(self):
