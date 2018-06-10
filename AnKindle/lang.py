@@ -138,12 +138,12 @@ trans = {
     <p>Basic feature supports only 10 clippings, need to upgrade to AnKindle Plus for batch importing.</p>
     """},
     "UPGRADE SUGGESTION MORE MDX": {'zh_CN': u"""
-    <p>基础版只支持使用2个MDX字典，使用更多备用字典需升级为 AnKindle Plus。</p><br>
+    <p>基础版只支持使用2个MDX词典，使用更多备用词典需升级为 AnKindle Plus。</p><br>
     """, 'en': """
     <p>Basic feature supports only 2 MDX files,  need to upgrade to AnKindle Plus for more.</p>
     """},
     "USE MDX": {'zh_CN': u"""
-    选择字典
+    选择词典
     """, 'en': """
     Dictionaries
     """},
@@ -151,7 +151,7 @@ trans = {
     <p><b>说明：</b></p>
     <ol>
     <li>插件以从上至下的优先级顺序使用词典查询释义，如果第一个词典不存在单词释义其则使用第二个词典查询，以此类推直到第五个。</li>
-    <li>如果您是第一次使用MDX字典，插件会对MDX文件建立索引，可能会出现长时间卡顿，MDX文件越大等待时间会越长。</li>
+    <li>如果您是第一次使用MDX词典，插件会对MDX文件建立索引，可能会出现长时间卡顿，MDX文件越大等待时间会越长。</li>
     </ol>
     <br>
     """, 'en': """

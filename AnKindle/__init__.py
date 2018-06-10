@@ -3,7 +3,7 @@
 # Project : AnKindle
 from functools import partial
 
-from aqt import QAction, QMenu, isWin, os, QKeySequence
+from aqt import QAction, QMenu, isWin, os
 from aqt import mw
 from aqt.importing import importFile
 from aqt.utils import showText
