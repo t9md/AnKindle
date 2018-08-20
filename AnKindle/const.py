@@ -5,7 +5,7 @@ import os
 
 from .libs import six
 
-__version__ = "0.7.21"
+__version__ = "0.7.31"
 HAS_SET_UP = False
 ADDON_CD = 1016931132
 DEBUG = False
