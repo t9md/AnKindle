@@ -267,7 +267,10 @@ class Window(QDialog):
     def MDXFiles(self):
         from . import _try_ext_module
         if _try_ext_module():
-            from AnKindlePlus import GetMDXConfig
+            try:
+                from AnKindlePlus import GetMDXConfig
+            except:
+                from .AnKindlePlus import GetMDXConfig
             return GetMDXConfig(self.current_mdx_lang)
         return ['', '', '', '', '', ]
 
