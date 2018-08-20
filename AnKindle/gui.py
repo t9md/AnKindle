@@ -45,9 +45,12 @@ class _HelpBtn(_ImageButton):
 
     def on_clicked(self):
         if os.path.isfile(self.help_text_or_file):
-            with open(self.help_text_or_file) as f:
-                text = f.read()
-                if not IS_PY3K:
+            if IS_PY3K:
+                with open(self.help_text_or_file, encoding="utf-8") as f:
+                    text = f.read()
+            else:
+                with open(self.help_text_or_file) as f:
+                    text = f.read()
                     text = text.decode("utf-8")
         else:
             text = self.help_text_or_file
@@ -365,7 +368,10 @@ class Window(QDialog):
         from . import _try_ext_module
         if _try_ext_module():
             if not ignore_selection:
-                from AnKindlePlus import MDXDialog, GetMDXConfig
+                try:
+                    from AnKindlePlus import MDXDialog
+                except:
+                    from .AnKindlePlus import MDXDialog
                 dlg = MDXDialog(self, self.current_mdx_lang)
                 dlg.exec_()
             mdx = self.MDXFilesFirstFile
@@ -400,7 +406,12 @@ class Window(QDialog):
         html = ''
         if not builder:
             return html
-        result = builder.mdx_lookup(word)  # self.word: six.ensure_text
+
+        try:
+            result = builder.mdx_lookup(word)  # self.word: six.ensure_text
+        except AttributeError:
+            return ''
+
         if result:
             if result[0].upper().find(u"@@@LINK=") > -1:
                 # redirect to a new word behind the equal symol.
