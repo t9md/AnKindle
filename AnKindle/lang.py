@@ -125,7 +125,7 @@ trans = {
     "UPGRADE SUGGESTION": {'zh_CN': u"""
     <p>AnKindle Plus：</p>
     <p>- 为您的所有Kindle标注制作Anki读书卡片！（点击菜单中“标注导入”进行试用）</p><br>
-    <p>是否前往商店购买激活码？（即将访问淘宝页面）</p><br>
+    <p>是否前往商店购买激活码？即将访问淘宝 (国内用户）& FastSpring（海外用户）</p><br>
     """, 'en': """
     <p><b>AnKindle Plus：<b></p>
     <p>Create Anki cards for all your Kindle clippings!</p>
