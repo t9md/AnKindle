@@ -6,7 +6,7 @@ from functools import partial
 from aqt import QAction, QMenu, isWin, os
 from aqt import mw
 from aqt.importing import importFile
-from aqt.utils import showText
+from aqt.utils import showInfo, showText
 from .const import MUST_IMPLEMENT_FIELDS, DEFAULT_TEMPLATE, __version__
 from .gui import Window
 from .lang import _trans
@@ -66,6 +66,7 @@ class AnKindleAddon:
         self.main_menu = None
         self.action_show_vocab_dialog = None
         self.action_show_clipping_dialog = None
+        self.failedToUnlock = False
         # self.main_menu_action = None
 
         if not self.avl_col_model_names:
@@ -124,8 +125,12 @@ class AnKindleAddon:
 
     @property
     def ext_unlocked(self):
-        if self.ext_available:
-            return AnKindlePlus.KuangKuang.Unlocked()
+        if self.ext_available and not self.failedToUnlock:
+            try:
+                return AnKindlePlus.KuangKuang.Unlocked()
+            except:
+                self.failedToUnlock = True
+                showInfo("Could not unlock AnKindlePlus. (An internet connection in required).")
         return False
 
     def on_show_enter_sn_dialog(self, *args):
